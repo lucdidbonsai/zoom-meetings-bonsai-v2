@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonsai CRM - Activity Feed Prototype</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        :root {
+          --brand-primary: #22ad01;
+          --brand-danger: #f45757;
+          --brand-success: #22ad01;
+          --text-default: #121212;
+          --text-muted: #6b6b6b;
+          --text-lighter: #8c8c8c;
+          --text-lightest: #b3b3b3;
+          --bg-content: #ffffff;
+          --bg-panel: #f9f9f9;
+          --bg-hover-subtle: #f5f5f5;
+          --bg-page: #fafafa;
+          --border-content: #e5e5e5;
+          --border-content-alt: #d1d1d1;
+          --border-darker: #c4c4c4;
+          --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08);
+          --shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.1);
+          --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.06);
+          --transition-fast: 150ms;
+          --transition-normal: 200ms;
+          --radius-sm: 4px;
+          --radius-md: 6px;
+          --radius-lg: 8px;
+          --radius-xl: 10px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+          -webkit-font-smoothing: antialiased;
+          color: var(--text-default);
+          background-color: var(--bg-page);
+        }
+        .app { display: flex; height: 100vh; overflow: hidden; }
+        .sidebar { width: 240px; background-color: var(--bg-content); border-right: 1px solid var(--border-content); padding: 20px; }
+        .sidebar-title { font-size: 24px; font-weight: 700; color: var(--brand-primary); margin-bottom: 30px; }
+        .sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
+        .nav-item { padding: 10px 12px; font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none; border-radius: var(--radius-md); transition: background-color var(--transition-fast), color var(--transition-fast); cursor: pointer; }
+        .nav-item:hover { background-color: var(--bg-hover-subtle); color: var(--text-default); }
+        .nav-item.active { background-color: #e8f5e9; color: var(--brand-primary); font-weight: 600; }
+        .main-content { flex: 1; overflow-y: auto; padding: 30px 40px; }
+        .page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; }
+        .page-title { font-size: 28px; font-weight: 600; color: var(--text-default); margin-bottom: 4px; }
+        .page-subtitle { font-size: 14px; color: var(--text-muted); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; font-size: 14px; font-weight: 500; border-radius: var(--radius-md); border: 1px solid transparent; cursor: pointer; transition: all var(--transition-fast); white-space: nowrap; background: none; }
+        .btn-primary { background-color: var(--brand-primary); color: white; border-color: var(--brand-primary); }
+        .btn-primary:hover { background-color: #1e9a01; }
+        .btn-default { background-color: var(--bg-content); color: var(--text-default); border-color: var(--border-content); }
+        .btn-default:hover { border-color: var(--border-content-alt); background-color: var(--bg-hover-subtle); }
+        .btn-success { background-color: var(--brand-success); color: white; }
+        .btn-success:hover { background-color: #1e9a01; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-icon { width: 40px; height: 40px; padding: 0; background-color: var(--bg-content); border: 1px solid var(--border-content); border-radius: var(--radius-md); cursor: pointer; color: var(--text-muted); }
+        .btn-icon:hover { border-color: var(--border-content-alt); background-color: var(--bg-hover-subtle); color: var(--text-default); }
+        .btn-icon-sm { width: 32px; height: 32px; padding: 0; background-color: transparent; border: none; cursor: pointer; color: var(--text-muted); }
+        .btn-text { background: none; border: none; color: var(--brand-primary); font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .btn-text-sm { background: none; border: none; color: var(--brand-primary); font-size: 12px; font-weight: 500; cursor: pointer; }
+        .search-container { margin-bottom: 20px; }
+        .search-input-wrapper { position: relative; max-width: 400px; }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-muted); }
+        .search-input { width: 100%; padding: 10px 12px 10px 40px; font-size: 14px; border: 1px solid var(--border-content); border-radius: var(--radius-md); background-color: var(--bg-content); transition: border-color var(--transition-fast); }
+        .search-input:focus { outline: none; border-color: var(--brand-primary); }
+        .contacts-list { display: flex; flex-direction: column; gap: 8px; }
+        .contact-card { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background-color: var(--bg-content); border: 1px solid var(--border-content); border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition-fast); }
+        .contact-card:hover { border-color: var(--border-content-alt); box-shadow: var(--shadow-card); }
+        .contact-card-content { flex: 1; display: flex; align-items: center; gap: 20px; }
+        .contact-avatar-section { display: flex; align-items: center; gap: 12px; min-width: 200px; }
+        .contact-avatar { width: 48px; height: 48px; border-radius: 50%; background-color: var(--bg-panel); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: var(--text-default); flex-shrink: 0; }
+        .contact-info { flex: 1; min-width: 0; }
+        .contact-name { font-size: 16px; font-weight: 600; color: var(--text-default); margin-bottom: 2px; }
+        .contact-role { font-size: 14px; color: var(--text-muted); }
+        .contact-meta { display: flex; align-items: center; gap: 16px; flex: 1; }
+        .company-badge { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 4px; color: white; font-size: 13px; font-weight: 500; }
+        .company-initials { font-weight: 700; font-size: 12px; }
+        .contact-email { font-size: 14px; color: var(--text-muted); }
+        .contact-arrow { width: 20px; height: 20px; color: var(--text-lighter); flex-shrink: 0; }
+        .contact-detail { display: flex; flex-direction: column; height: 100vh; background-color: var(--bg-page); overflow: hidden; }
+        .detail-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background-color: var(--bg-content); border-bottom: 1px solid var(--border-content); }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .breadcrumb-link { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; padding: 0; }
+        .breadcrumb-link:hover { color: var(--text-default); }
+        .breadcrumb-separator { color: var(--text-lighter); }
+        .breadcrumb-current { color: var(--text-default); font-weight: 500; }
+        .header-actions { display: flex; gap: 8px; }
+        .contact-info-section { background-color: var(--bg-content); padding: 24px 32px; border-bottom: 1px solid var(--border-content); }
+        .contact-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+        .contact-avatar-large { width: 64px; height: 64px; border-radius: 50%; background-color: var(--bg-panel); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 600; color: var(--text-default); flex-shrink: 0; }
+        .contact-details { flex: 1; }
+        .contact-detail-name { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+        .contact-detail-role { font-size: 14px; color: var(--text-muted); }
+        .action-buttons { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+        .tabs { display: flex; gap: 32px; border-bottom: 1px solid var(--border-content); margin: 0 -32px; padding: 0 32px; }
+        .tab { position: relative; background: none; border: none; padding: 12px 4px; font-size: 14px; font-weight: 500; color: var(--text-muted); cursor: pointer; white-space: nowrap; transition: color var(--transition-fast); }
+        .tab:hover { color: var(--text-default); }
+        .tab.active { color: var(--brand-primary); }
+        .tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background-color: var(--brand-primary); }
+        .detail-content-wrapper { display: flex; flex: 1; overflow: hidden; }
+        .activity-feed { flex: 1; padding: 32px; overflow-y: auto; }
+        .activity-section { margin-bottom: 40px; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .section-title { font-size: 18px; font-weight: 600; color: var(--text-default); margin-bottom: 16px; }
+        .upcoming-cards { display: flex; flex-direction: column; gap: 12px; }
+        .meeting-card { display: flex; align-items: center; justify-content: space-between; padding: 16px; background-color: var(--bg-content); border: 1px solid var(--border-content); border-radius: var(--radius-md); transition: border-color var(--transition-fast); }
+        .meeting-card:hover { border-color: var(--border-content-alt); }
+        .meeting-card-header { display: flex; align-items: flex-start; gap: 12px; flex: 1; }
+        .meeting-icon-wrapper { width: 32px; height: 32px; border-radius: var(--radius-sm); background-color: #e3f2fd; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .meeting-icon { width: 16px; height: 16px; color: #1976d2; }
+        .meeting-info { flex: 1; }
+        .meeting-title { font-size: 14px; font-weight: 600; color: var(--text-default); margin-bottom: 4px; }
+        .meeting-meta { font-size: 12px; color: var(--text-muted); }
+        .attendees-count { margin-left: 8px; }
+        .meeting-actions { display: flex; align-items: center; gap: 8px; }
+        .activity-timeline { display: flex; flex-direction: column; gap: 24px; }
+        .activity-item { position: relative; display: flex; gap: 12px; }
+        .activity-item::before { content: ''; position: absolute; left: 16px; top: 40px; bottom: -24px; width: 1px; background-color: var(--border-content); }
+        .activity-item.last::before { display: none; }
+        .activity-icon-wrapper { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; }
+        .activity-icon { width: 16px; height: 16px; }
+        .activity-content { flex: 1; min-width: 0; }
+        .activity-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+        .activity-title { font-size: 14px; color: var(--text-default); }
+        .activity-date { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+        .activity-note { background-color: var(--bg-content); border: 1px solid var(--border-content); border-radius: var(--radius-md); padding: 12px 16px; font-size: 14px; color: var(--text-default); line-height: 1.5; }
+        .email-subject { margin-bottom: 6px; }
+        .email-preview { color: var(--text-muted); }
+        .document-preview { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background-color: var(--bg-content); border: 1px solid var(--border-content); border-radius: var(--radius-md); }
+        .document-preview svg { color: var(--text-muted); flex-shrink: 0; margin-top: 2px; }
+        .document-title { font-size: 14px; font-weight: 500; color: var(--text-default); margin-bottom: 2px; }
+        .document-amount { font-size: 14px; font-weight: 600; color: var(--text-default); }
+        .document-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .meeting-preview { background-color: var(--bg-content); border: 1px solid var(--border-content); border-radius: var(--radius-md); padding: 12px 16px; }
+        .meeting-preview-header { display: flex; align-items: flex-start; gap: 12px; }
+        .meeting-preview-header svg { color: #1976d2; flex-shrink: 0; margin-top: 2px; }
+        .meeting-preview-title { font-size: 14px; font-weight: 500; color: var(--text-default); margin-bottom: 4px; }
+        .meeting-preview-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+        .meeting-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+        .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; font-size: 11px; font-weight: 500; border-radius: var(--radius-sm); }
+        .badge svg { width: 12px; height: 12px; }
+        .badge-primary { background-color: #e3f2fd; color: #1976d2; }
+        .badge-blue { background-color: #e3f2fd; color: #1976d2; }
+        .badge-green { background-color: #e8f5e9; color: #2e7d32; }
+        .badge-purple { background-color: #f3e5f5; color: #7b1fa2; }
+        .detail-sidebar { width: 320px; background-color: var(--bg-panel); border-left: 1px solid var(--border-content); padding: 24px; overflow-y: auto; }
+        .sidebar-section { background-color: var(--bg-content); border: 1px solid var(--border-content); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 16px; }
+        .sidebar-section-title { font-size: 14px; font-weight: 600; color: var(--text-default); margin-bottom: 16px; }
+        .sidebar-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .info-grid { display: flex; flex-direction: column; gap: 16px; }
+        .info-field { display: flex; flex-direction: column; gap: 4px; }
+        .info-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-value { font-size: 14px; color: var(--text-default); line-height: 1.4; }
+        .company-card { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border-content); border-radius: var(--radius-md); transition: background-color var(--transition-fast); }
+        .company-card:hover { background-color: var(--bg-hover-subtle); }
+        .company-avatar { width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+        .company-info-sidebar { flex: 1; min-width: 0; }
+        .company-name-sidebar { font-size: 14px; font-weight: 600; color: var(--text-default); margin-bottom: 4px; }
+        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; text-align: center; color: var(--text-muted); }
+        .empty-state svg { margin-bottom: 12px; }
+        .empty-state p { font-size: 14px; }
+        .w-3 { width: 12px; height: 12px; }
+        .w-4 { width: 16px; height: 16px; }
+        .w-5 { width: 20px; height: 20px; }
+        .w-12 { width: 48px; height: 48px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      // DATA - 12 sample contacts
+      const contacts = [
+        { id: 1, name: "Michael Fawler", initials: "MF", role: "Senior Manager of Consulting", company: "Adobe", companyInitials: "A", companyColor: "#EB1000", email: "michael.fawler@adobe.com", phone: "+1 (415) 789-2341", birthday: "March 16, 1985", region: "North America - West Coast", comments: "Key stakeholder for Adobe's Q1 marketing initiatives. Prefers morning meetings.", isPrimary: true },
+        { id: 2, name: "Sarah Chen", initials: "SC", role: "VP of Product", company: "Salesforce", companyInitials: "S", companyColor: "#00A1E0", email: "sarah.chen@salesforce.com", phone: "+1 (628) 555-0198", birthday: "July 22, 1988", region: "North America - West Coast", comments: "Decision maker for enterprise software. Very detail-oriented.", isPrimary: true },
+        { id: 3, name: "David Rodriguez", initials: "DR", role: "Creative Director", company: "Netflix", companyInitials: "N", companyColor: "#E50914", email: "d.rodriguez@netflix.com", phone: "+1 (323) 555-0142", birthday: "November 8, 1983", region: "North America - West Coast", comments: "Works on brand campaigns. Prefers visual presentations.", isPrimary: true },
+        { id: 4, name: "Emily Watson", initials: "EW", role: "Head of Marketing", company: "Shopify", companyInitials: "S", companyColor: "#7AB55C", email: "emily.watson@shopify.com", phone: "+1 (613) 555-0176", birthday: "April 12, 1990", region: "North America - East Coast", comments: "Interested in growth marketing strategies. Fast decision maker.", isPrimary: true },
+        { id: 5, name: "James Mitchell", initials: "JM", role: "CTO", company: "Stripe", companyInitials: "S", companyColor: "#635BFF", email: "james.mitchell@stripe.com", phone: "+1 (650) 555-0134", birthday: "September 3, 1986", region: "North America - West Coast", comments: "Technical stakeholder. Needs detailed technical specs.", isPrimary: true },
+        { id: 6, name: "Amanda Foster", initials: "AF", role: "Senior Product Manager", company: "Figma", companyInitials: "F", companyColor: "#000000", email: "amanda.foster@figma.com", phone: "+1 (415) 555-0189", birthday: "January 28, 1991", region: "North America - West Coast", comments: "Design-focused. Values clean, intuitive solutions.", isPrimary: true },
+        { id: 7, name: "Robert Kim", initials: "RK", role: "VP of Sales", company: "HubSpot", companyInitials: "H", companyColor: "#FF7A59", email: "robert.kim@hubspot.com", phone: "+1 (857) 555-0145", birthday: "May 15, 1984", region: "North America - East Coast", comments: "Sales-driven. Appreciates ROI-focused presentations.", isPrimary: true },
+        { id: 8, name: "Jessica Martinez", initials: "JM", role: "Director of Operations", company: "Asana", companyInitials: "A", companyColor: "#F06A6A", email: "jessica.martinez@asana.com", phone: "+1 (415) 555-0167", birthday: "December 7, 1987", region: "North America - West Coast", comments: "Process-oriented. Wants clear timelines and deliverables.", isPrimary: true },
+        { id: 9, name: "Christopher Lee", initials: "CL", role: "Chief Strategy Officer", company: "Notion", companyInitials: "N", companyColor: "#000000", email: "chris.lee@notion.so", phone: "+1 (628) 555-0123", birthday: "August 19, 1982", region: "North America - West Coast", comments: "Strategic thinker. Likes to start with the big picture.", isPrimary: true },
+        { id: 10, name: "Laura Albany", initials: "LA", role: "Partnerships Manager", company: "Slack", companyInitials: "S", companyColor: "#4A154B", email: "laura.albany@slack.com", phone: "+1 (415) 555-0190", birthday: "February 24, 1989", region: "North America - West Coast", comments: "Collaborative approach. Prefers working closely with teams.", isPrimary: true },
+        { id: 11, name: "Daniel Thompson", initials: "DT", role: "Finance Director", company: "Zoom", companyInitials: "Z", companyColor: "#2D8CFF", email: "daniel.thompson@zoom.us", phone: "+1 (408) 555-0156", birthday: "June 11, 1985", region: "North America - West Coast", comments: "Budget-conscious. Needs detailed financial breakdowns.", isPrimary: true },
+        { id: 12, name: "Olivia Parker", initials: "OP", role: "Content Marketing Lead", company: "Mailchimp", companyInitials: "M", companyColor: "#FFE01B", email: "olivia.parker@mailchimp.com", phone: "+1 (404) 555-0178", birthday: "October 5, 1992", region: "North America - East Coast", comments: "Content-first mindset. Values storytelling and brand voice.", isPrimary: true }
+      ];
+
+      // Activity data - Abbreviated for standalone version
+      const getActivitiesForContact = (id) => {
+        if (id === 1) {
+          return [
+            { id: 'act-1', type: 'meeting_scheduled', title: 'Q2 Planning Session', date: 'Jan 20, 2026', time: '2:00 PM', attendees: 4, actor: 'Laura Albany', upcoming: true, zoomUrl: 'https://zoom.us/j/123456789' },
+            { id: 'act-2', type: 'meeting_scheduled', title: 'Creative Review', date: 'Jan 22, 2026', time: '10:30 AM', attendees: 3, actor: 'Sarah Chen', upcoming: true, zoomUrl: 'https://zoom.us/j/987654321' },
+            { id: 'act-3', type: 'note_added', date: 'Jan 18, 2026', time: '11:15 AM', actor: 'Laura Albany', content: 'Michael confirmed budget approval for Q1 marketing strategy. Moving forward with the $85K proposal.' },
+            { id: 'act-4', type: 'proposal_sent', date: 'Jan 15, 2026', time: '3:30 PM', actor: 'Laura Albany', documentTitle: 'Q1 2026 Marketing Strategy', amount: '$85,000' },
+            { id: 'act-5', type: 'meeting_ended', title: 'Budget Review', date: 'Jan 12, 2026', time: '2:30 PM', duration: '1h 36min', attendees: 5, actor: 'System', hasRecording: true, hasSummary: true, hasTranscript: true },
+            { id: 'act-6', type: 'contract_signed', date: 'Jan 10, 2026', time: '4:22 PM', actor: 'Michael Fawler', documentTitle: 'Marketing Services Agreement' },
+            { id: 'act-7', type: 'invoice_paid', date: 'Jan 8, 2026', time: '9:15 AM', actor: 'Michael Fawler', amount: '$5,250.00', invoiceNumber: 'INV-2026-001', paymentMethod: 'Credit Card' },
+            { id: 'act-8', type: 'project_email_received', date: 'Jan 5, 2026', time: '11:42 AM', actor: 'Michael Fawler', subject: 'Re: Q1 Campaign Timeline', preview: 'Thanks for the updated timeline. This looks great...' },
+            { id: 'act-9', type: 'proposal_accepted', date: 'Dec 28, 2025', time: '2:18 PM', actor: 'Michael Fawler', documentTitle: 'Website Redesign Proposal', amount: '$42,000' },
+            { id: 'act-10', type: 'deal_assigned', date: 'Dec 20, 2025', time: '10:30 AM', actor: 'Laura Albany', dealName: 'Adobe Q1 Marketing Engagement', dealValue: '$85,000', stage: 'Proposal Sent' },
+            { id: 'act-11', type: 'client_portal_message', date: 'Dec 18, 2025', time: '4:55 PM', actor: 'Michael Fawler', content: 'Just uploaded the brand guidelines to the shared folder!' },
+            { id: 'act-12', type: 'invoice_sent', date: 'Dec 15, 2025', time: '9:00 AM', actor: 'Laura Albany', amount: '$5,250.00', invoiceNumber: 'INV-2026-001', dueDate: 'Jan 14, 2026' },
+            { id: 'act-13', type: 'contact_property_updated', date: 'Dec 10, 2025', time: '3:20 PM', actor: 'Laura Albany', field: 'Job Title', oldValue: 'Manager', newValue: 'Senior Manager' },
+            { id: 'act-14', type: 'contact_created', date: 'Nov 5, 2025', time: '2:15 PM', actor: 'Laura Albany', createdBy: 'manual' }
+          ];
+        }
+        return [
+          { id: `act-${id}-1`, type: 'meeting_scheduled', title: 'Initial Discovery Call', date: 'Jan 25, 2026', time: '11:00 AM', attendees: 2, actor: 'Laura Albany', upcoming: true, zoomUrl: 'https://zoom.us/j/111222333' },
+          { id: `act-${id}-2`, type: 'note_added', date: 'Jan 20, 2026', time: '2:30 PM', actor: 'Laura Albany', content: 'Great first conversation. Very interested in our services.' },
+          { id: `act-${id}-3`, type: 'project_email_sent', date: 'Jan 18, 2026', time: '10:15 AM', actor: 'Laura Albany', subject: 'Introduction & Next Steps', preview: 'Thank you for taking the time to connect...' },
+          { id: `act-${id}-4`, type: 'contact_created', date: 'Jan 15, 2026', time: '4:45 PM', actor: 'Laura Albany', createdBy: 'manual' }
+        ];
+      };
+
+      const eventTypeConfig = {
+        meeting_scheduled: { icon: 'calendar', color: '#22ad01' },
+        meeting_ended: { icon: 'video', color: '#5db6f8' },
+        note_added: { icon: 'file', color: '#8c8b7d' },
+        proposal_sent: { icon: 'file', color: '#520eb0' },
+        proposal_accepted: { icon: 'check', color: '#22ad01' },
+        contract_signed: { icon: 'check', color: '#22ad01' },
+        invoice_sent: { icon: 'dollar', color: '#ee8146' },
+        invoice_paid: { icon: 'check', color: '#22ad01' },
+        deal_assigned: { icon: 'briefcase', color: '#5db6f8' },
+        client_portal_message: { icon: 'message', color: '#5db6f8' },
+        project_email_sent: { icon: 'mail', color: '#8c8b7d' },
+        project_email_received: { icon: 'mail', color: '#8c8b7d' },
+        contact_property_updated: { icon: 'edit', color: '#8c8b7d' },
+        contact_created: { icon: 'user', color: '#22ad01' }
+      };
+
+      // Icon component
+      const Icon = ({ name, className = "w-4 h-4", style }) => {
+        const icons = {
+          'calendar': 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+          'video': 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
+          'file': 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+          'check': 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+          'dollar': 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+          'briefcase': 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+          'message': 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z',
+          'mail': 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+          'edit': 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
+          'user': 'M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z',
+          'search': 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
+          'chevron-right': 'M9 5l7 7-7 7',
+          'plus': 'M12 4v16m8-8H4',
+          'more': 'M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z',
+          'phone': 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'
+        };
+        const path = icons[name] || icons['file'];
+        return <svg className={className} style={style} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={path} /></svg>;
+      };
+
+      // Helper functions
+      const renderActivityTitle = (activity) => {
+        switch (activity.type) {
+          case 'meeting_scheduled': return `${activity.actor} scheduled a meeting`;
+          case 'meeting_ended': return 'Meeting completed';
+          case 'note_added': return `${activity.actor} added a note`;
+          case 'proposal_sent': return `${activity.actor} sent a proposal`;
+          case 'proposal_accepted': return `${activity.actor} accepted proposal`;
+          case 'contract_signed': return `${activity.actor} signed the contract`;
+          case 'invoice_sent': return `${activity.actor} sent an invoice`;
+          case 'invoice_paid': return `${activity.actor} paid invoice`;
+          case 'deal_assigned': return `${activity.actor} assigned a deal`;
+          case 'client_portal_message': return `${activity.actor} sent a message in client portal`;
+          case 'project_email_sent': return `${activity.actor} sent an email`;
+          case 'project_email_received': return `${activity.actor} sent an email`;
+          case 'contact_property_updated': return `${activity.actor} updated contact`;
+          case 'contact_created': return `Contact created by ${activity.actor}`;
+          default: return 'Activity';
+        }
+      };
+
+      const renderActivityBody = (activity) => {
+        switch (activity.type) {
+          case 'meeting_scheduled':
+          case 'meeting_ended':
+            return (
+              <div className="meeting-preview">
+                <div className="meeting-preview-header">
+                  <Icon name="video" className="w-4 h-4" />
+                  <div>
+                    <p className="meeting-preview-title">{activity.title}</p>
+                    <p className="meeting-preview-meta">{activity.duration && `Duration: ${activity.duration} • `}{activity.attendees} participants</p>
+                    {activity.hasRecording && (
+                      <div className="meeting-badges">
+                        <span className="badge badge-blue"><Icon name="video" className="w-3 h-3" /> Recording</span>
+                        {activity.hasSummary && <span className="badge badge-green"><Icon name="file" className="w-3 h-3" /> Summary</span>}
+                        {activity.hasTranscript && <span className="badge badge-purple"><Icon name="file" className="w-3 h-3" /> Transcript</span>}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          case 'note_added':
+          case 'client_portal_message':
+            return <div className="activity-note"><p>{activity.content}</p></div>;
+          case 'proposal_sent':
+          case 'proposal_accepted':
+          case 'contract_signed':
+            return (
+              <div className="document-preview">
+                <Icon name="file" className="w-4 h-4" />
+                <div>
+                  <p className="document-title">{activity.documentTitle}</p>
+                  {activity.amount && <p className="document-amount">{activity.amount}</p>}
+                </div>
+              </div>
+            );
+          case 'invoice_sent':
+          case 'invoice_paid':
+            return (
+              <div className="document-preview">
+                <Icon name="file" className="w-4 h-4" />
+                <div>
+                  <p className="document-title">Invoice {activity.invoiceNumber}</p>
+                  <p className="document-amount">{activity.amount}</p>
+                  {activity.dueDate && <p className="document-meta">Due: {activity.dueDate}</p>}
+                  {activity.paymentMethod && <p className="document-meta">Paid via {activity.paymentMethod}</p>}
+                </div>
+              </div>
+            );
+          case 'deal_assigned':
+            return (
+              <div className="document-preview">
+                <div>
+                  <p className="document-title">{activity.dealName}</p>
+                  <p className="document-amount">{activity.dealValue}</p>
+                  <p className="document-meta">Stage: {activity.stage}</p>
+                </div>
+              </div>
+            );
+          case 'project_email_sent':
+          case 'project_email_received':
+            return (
+              <div className="activity-note">
+                <p className="email-subject"><strong>{activity.subject}</strong></p>
+                <p className="email-preview">{activity.preview}</p>
+              </div>
+            );
+          case 'contact_property_updated':
+            return <div className="activity-note"><p>Changed <strong>{activity.field}</strong> from "{activity.oldValue}" to "{activity.newValue}"</p></div>;
+          case 'contact_created':
+            return <div className="activity-note"><p>Created {activity.createdBy === 'manual' ? 'manually' : 'by system'}</p></div>;
+          default:
+            return null;
+        }
+      };
+
+      // Components
+      const UpcomingMeetingCard = ({ activity }) => (
+        <div className="meeting-card">
+          <div className="meeting-card-header">
+            <div className="meeting-icon-wrapper"><Icon name="video" className="meeting-icon" /></div>
+            <div className="meeting-info">
+              <p className="meeting-title">{activity.title}</p>
+              <p className="meeting-meta">Meeting — {activity.date} — {activity.time}{activity.attendees && <span className="attendees-count">👤 {activity.attendees}</span>}</p>
+            </div>
+          </div>
+          <div className="meeting-actions">
+            {activity.zoomUrl && <a href={activity.zoomUrl} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-success">Join Meeting</a>}
+            <button className="btn-icon-sm"><Icon name="more" /></button>
+          </div>
+        </div>
+      );
+
+      const ActivityItem = ({ activity, isLast }) => {
+        const config = eventTypeConfig[activity.type];
+        return (
+          <div className={`activity-item ${isLast ? 'last' : ''}`}>
+            <div className="activity-icon-wrapper" style={{ backgroundColor: `${config.color}15` }}>
+              <Icon name={config.icon} className="activity-icon" style={{ color: config.color }} />
+            </div>
+            <div className="activity-content">
+              <div className="activity-header">
+                <span className="activity-title">{renderActivityTitle(activity)}</span>
+                <span className="activity-date">{activity.date}, {activity.time}</span>
+              </div>
+              {renderActivityBody(activity)}
+            </div>
+          </div>
+        );
+      };
+
+      const InfoField = ({ label, value }) => (
+        <div className="info-field">
+          <p className="info-label">{label}</p>
+          <p className="info-value">{value}</p>
+        </div>
+      );
+
+      const ContactDetail = ({ contact, onBack }) => {
+        const [activeTab, setActiveTab] = useState('activity');
+        const activities = getActivitiesForContact(contact.id);
+        const upcomingActivities = activities.filter(a => a.upcoming);
+        const pastActivities = activities.filter(a => !a.upcoming);
+        const tabs = ['activity', 'notes', 'meetings'];
+
+        return (
+          <div className="contact-detail">
+            <div className="detail-header">
+              <div className="breadcrumb">
+                <button onClick={onBack} className="breadcrumb-link">Contacts</button>
+                <span className="breadcrumb-separator">/</span>
+                <span className="breadcrumb-current">{contact.name}</span>
+              </div>
+              <div className="header-actions">
+                <button className="btn-icon"><Icon name="more" /></button>
+                <button className="btn-icon"><Icon name="plus" /></button>
+              </div>
+            </div>
+            <div className="contact-info-section">
+              <div className="contact-header">
+                <div className="contact-avatar-large">{contact.initials}</div>
+                <div className="contact-details">
+                  <h1 className="contact-detail-name">{contact.name}</h1>
+                  <p className="contact-detail-role">{contact.role} at <span style={{ color: contact.companyColor }}>{contact.company}</span></p>
+                </div>
+              </div>
+              <div className="action-buttons">
+                <button className="btn btn-default"><Icon name="file" className="w-4 h-4" /> Note</button>
+                <button className="btn btn-default"><Icon name="mail" className="w-4 h-4" /> Email</button>
+                <button className="btn btn-default"><Icon name="phone" className="w-4 h-4" /> Call</button>
+                <button className="btn btn-default"><Icon name="calendar" className="w-4 h-4" /> Meeting</button>
+                <button className="btn-icon"><Icon name="more" /></button>
+              </div>
+              <div className="tabs">
+                {tabs.map(tab => (
+                  <button key={tab} onClick={() => setActiveTab(tab)} className={`tab ${activeTab === tab ? 'active' : ''}`}>
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="detail-content-wrapper">
+              <div className="activity-feed">
+                {activeTab === 'activity' && (
+                  <>
+                    {upcomingActivities.length > 0 && (
+                      <div className="activity-section">
+                        <div className="section-header">
+                          <h2 className="section-title">Upcoming</h2>
+                          <button className="btn-text"><Icon name="plus" className="w-4 h-4" /></button>
+                        </div>
+                        <div className="upcoming-cards">
+                          {upcomingActivities.map(activity => <UpcomingMeetingCard key={activity.id} activity={activity} />)}
+                        </div>
+                      </div>
+                    )}
+                    <div className="activity-section">
+                      <h2 className="section-title">History</h2>
+                      <div className="activity-timeline">
+                        {pastActivities.map((activity, index) => <ActivityItem key={activity.id} activity={activity} isLast={index === pastActivities.length - 1} />)}
+                      </div>
+                    </div>
+                  </>
+                )}
+                {activeTab === 'notes' && <div className="empty-state"><Icon name="file" className="w-12 h-12" style={{ color: '#8c8b7d' }} /><p>No notes yet</p></div>}
+                {activeTab === 'meetings' && <div className="empty-state"><Icon name="calendar" className="w-12 h-12" style={{ color: '#8c8b7d' }} /><p>No meetings yet</p></div>}
+              </div>
+              <div className="detail-sidebar">
+                <div className="sidebar-section">
+                  <h3 className="sidebar-section-title">Key Information</h3>
+                  <div className="info-grid">
+                    <InfoField label="EMAIL" value={contact.email} />
+                    <InfoField label="PHONE NUMBER" value={contact.phone} />
+                    <InfoField label="BIRTHDAY" value={contact.birthday} />
+                    <InfoField label="COMMENTS" value={contact.comments} />
+                    <InfoField label="REGION" value={contact.region} />
+                  </div>
+                </div>
+                <div className="sidebar-section">
+                  <div className="sidebar-section-header">
+                    <h3 className="sidebar-section-title">Companies (1)</h3>
+                    <button className="btn-text-sm">+ Add</button>
+                  </div>
+                  <div className="company-card">
+                    <div className="company-avatar" style={{ backgroundColor: contact.companyColor }}>{contact.companyInitials}</div>
+                    <div className="company-info-sidebar">
+                      <p className="company-name-sidebar">{contact.company}</p>
+                      {contact.isPrimary && <span className="badge badge-primary">Primary</span>}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const App = () => {
+        const [selectedContact, setSelectedContact] = useState(null);
+        const [searchQuery, setSearchQuery] = useState('');
+        const filteredContacts = contacts.filter(contact =>
+          contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          contact.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          contact.email.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        if (selectedContact) {
+          return <ContactDetail contact={selectedContact} onBack={() => setSelectedContact(null)} />;
+        }
+
+        return (
+          <div className="app">
+            <div className="sidebar">
+              <h1 className="sidebar-title">Bonsai</h1>
+              <div className="sidebar-nav">
+                <a href="#" className="nav-item">Dashboard</a>
+                <a href="#" className="nav-item">Projects</a>
+                <a href="#" className="nav-item active">Contacts</a>
+                <a href="#" className="nav-item">Invoices</a>
+                <a href="#" className="nav-item">Contracts</a>
+              </div>
+            </div>
+            <div className="main-content">
+              <div className="page-header">
+                <div>
+                  <h1 className="page-title">Contacts</h1>
+                  <p className="page-subtitle">{contacts.length} contacts</p>
+                </div>
+                <button className="btn btn-primary"><span>+ New Contact</span></button>
+              </div>
+              <div className="search-container">
+                <div className="search-input-wrapper">
+                  <Icon name="search" className="search-icon" />
+                  <input type="text" className="search-input" placeholder="Search contacts..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                </div>
+              </div>
+              <div className="contacts-list">
+                {filteredContacts.map((contact) => (
+                  <div key={contact.id} className="contact-card" onClick={() => setSelectedContact(contact)}>
+                    <div className="contact-card-content">
+                      <div className="contact-avatar-section">
+                        <div className="contact-avatar">{contact.initials}</div>
+                        <div className="contact-info">
+                          <h3 className="contact-name">{contact.name}</h3>
+                          <p className="contact-role">{contact.role}</p>
+                        </div>
+                      </div>
+                      <div className="contact-meta">
+                        <div className="company-badge" style={{ backgroundColor: contact.companyColor }}>
+                          <span className="company-initials">{contact.companyInitials}</span>
+                          <span className="company-name">{contact.company}</span>
+                        </div>
+                        <div className="contact-email">{contact.email}</div>
+                      </div>
+                    </div>
+                    <Icon name="chevron-right" className="contact-arrow" />
+                  </div>
+                ))}
+              </div>
+              {filteredContacts.length === 0 && (
+                <div className="empty-state"><p>No contacts found matching "{searchQuery}"</p></div>
+              )}
+            </div>
+          </div>
+        );
+      };
+
+      // Render
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
