@@ -1,9 +1,8 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/bonsai-ui-v2.html" },
-    { "source": "/(.*)", "destination": "/bonsai-ui-v2.html" }
-  ],
-  "buildCommand": null,
-  "devCommand": null,
-  "installCommand": null
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ]
 }
