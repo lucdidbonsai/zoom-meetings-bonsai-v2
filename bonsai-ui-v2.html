@@ -731,7 +731,34 @@
             { type: 'note_added', date: 'Jan 17, 2026', time: '3:45 PM', actor: 'Jason Fraser', content: 'Had an excellent conversation with @Michael about Adobe\'s brand positioning for Q2. He\'s particularly interested in expanding into video marketing and wants to explore TikTok and YouTube strategies.' },
             { type: 'proposal_sent', date: 'Jan 15, 2026', time: '3:30 PM', actor: 'Laura Albany', documentTitle: 'Q1 2026 Marketing Strategy', amount: '$85,000' },
             { type: 'note_added', date: 'Jan 13, 2026', time: '9:20 AM', actor: 'Laura Albany', content: 'Follow-up from budget review meeting: Michael needs final approval from CFO before proceeding. He mentioned timing is tight for Q1 launch - need to move quickly once approved.' },
-            { type: 'meeting_ended', title: 'Budget Review', date: 'Jan 12, 2026', time: '2:30 PM', duration: '1h 36min', attendees: 5, hasRecording: true, hasSummary: true, hasTranscript: true },
+            { type: 'meeting_ended', title: 'Budget Review', date: 'Jan 12, 2026', time: '2:30 PM', duration: '1h 36min', attendees: 5, hasRecording: true, hasSummary: true, hasTranscript: true,
+              summary: 'This meeting reviewed the Q1 marketing budget proposal with Michael Fawler and his team at Adobe. Key discussions included finalizing the $85K budget allocation, timeline adjustments for the campaign launch, and addressing concerns about the creative development schedule. The team agreed to accelerate the concept phase and incorporate legal review time into the planning.',
+              chapters: [
+                { title: 'Budget Overview', timestamp: '0:00' },
+                { title: 'Timeline Discussion', timestamp: '18:45' },
+                { title: 'Creative Development Schedule', timestamp: '35:20' },
+                { title: 'Legal Review Process', timestamp: '52:15' },
+                { title: 'Next Steps & Action Items', timestamp: '1:15:00' }
+              ],
+              action_items: [
+                { text: 'Send revised timeline with accelerated creative phase', assignee: 'Laura Albany', completed: true },
+                { text: 'Schedule follow-up with legal team', assignee: 'Michael Fawler', completed: false },
+                { text: 'Prepare initial creative concepts for Jan 20 review', assignee: 'Jason Fraser', completed: false },
+                { text: 'Share updated brand guidelines', assignee: 'Michael Fawler', completed: true }
+              ],
+              transcript: [
+                { speaker: 'Laura Albany', timestamp: '0:00:05', text: 'Good afternoon everyone. Thanks for joining the budget review call. Michael, great to see you.' },
+                { speaker: 'Michael Fawler', timestamp: '0:00:15', text: 'Thanks Laura, excited to finalize this. I have great news - the CFO approved the full $85K budget yesterday.' },
+                { speaker: 'Laura Albany', timestamp: '0:00:28', text: 'That\'s fantastic news! That really opens things up for us. Jason, do you want to walk us through the creative budget allocation?' },
+                { speaker: 'Jason Fraser', timestamp: '0:00:42', text: 'Sure. So we\'ve allocated $35K for creative development, which gives us room for three full concept directions plus revisions.' },
+                { speaker: 'Michael Fawler', timestamp: '0:01:15', text: 'That sounds good. One thing I wanted to discuss - our stakeholders are pushing for an earlier concept review. Any chance we can see initial ideas by January 20th?' },
+                { speaker: 'Jason Fraser', timestamp: '0:01:35', text: 'That\'s a tight turnaround, but I think we can make it work if we prioritize the discovery phase this week.' },
+                { speaker: 'Laura Albany', timestamp: '0:01:52', text: 'Let me pull up the timeline. Michael, you mentioned needing legal review for any claims. How long does that typically take?' },
+                { speaker: 'Michael Fawler', timestamp: '0:02:10', text: 'Usually 3-5 business days. Our legal team is pretty responsive, but we should factor that buffer in.' },
+                { speaker: 'Laura Albany', timestamp: '0:02:28', text: 'Got it. So if we aim for concepts by the 20th, legal review by the 27th, we could have approved creative by end of month.' },
+                { speaker: 'Michael Fawler', timestamp: '0:02:45', text: 'Perfect. That works with our internal timeline. The MAX conference is in mid-March and we need this campaign running before then.' }
+              ]
+            },
             { type: 'meeting_ended', title: 'Campaign Planning Workshop', date: 'Dec 8, 2025', time: '1:00 PM', duration: '2h 15min', attendees: 6, hasRecording: true, hasTranscript: false, hasSummary: false },
             { type: 'meeting_ended', title: 'Quarterly Business Review', date: 'Nov 15, 2025', time: '3:00 PM', duration: '1h 45min', attendees: 8, hasRecording: false, hasTranscript: true, hasSummary: false },
             { type: 'contract_signed', date: 'Jan 10, 2026', time: '4:22 PM', actor: 'Michael Fawler', documentTitle: 'Marketing Services Agreement' },
@@ -761,8 +788,45 @@
             { type: 'note_added', date: 'Jan 17, 2026', time: '1:30 PM', actor: 'Alex Bennett', content: '@Sarah shared some really insightful feedback on our product roadmap. She wants to prioritize mobile app features over web in Q1. Her team at Google has done extensive research showing 78% of their users prefer mobile-first experiences.' },
             { type: 'invoice_paid', date: 'Jan 16, 2026', time: '2:45 PM', actor: 'Sarah Chen', amount: '$12,500.00', invoiceNumber: 'INV-2026-045' },
             { type: 'note_added', date: 'Jan 15, 2026', time: '10:15 AM', actor: 'Laura Albany', content: 'Quick call with Sarah about timeline adjustments. She needs the UX research phase completed by end of Feb due to internal product launch deadline in March. Will need to bring in additional resources.' },
-            { type: 'meeting_ended', title: 'Discovery Call', date: 'Jan 14, 2026', time: '11:00 AM', duration: '45min', attendees: 3, hasRecording: true, hasSummary: true, hasTranscript: false },
-            { type: 'meeting_ended', title: 'Product Requirements Review', date: 'Dec 10, 2025', time: '2:30 PM', duration: '1h 20min', attendees: 4, hasRecording: true, hasTranscript: true, hasSummary: true },
+            { type: 'meeting_ended', title: 'Discovery Call', date: 'Jan 14, 2026', time: '11:00 AM', duration: '45min', attendees: 3, hasRecording: true, hasSummary: true, hasTranscript: false,
+              summary: 'Initial discovery call with Sarah Chen to discuss her product strategy needs at Salesforce. Key topics included mobile-first priorities, performance optimization goals, and timeline constraints around the March product launch. Sarah emphasized the importance of user research synthesis and competitive analysis.',
+              chapters: [
+                { title: 'Introductions', timestamp: '0:00' },
+                { title: 'Current Challenges', timestamp: '5:30' },
+                { title: 'Mobile Strategy Discussion', timestamp: '18:00' },
+                { title: 'Timeline & Constraints', timestamp: '32:15' },
+                { title: 'Next Steps', timestamp: '40:00' }
+              ],
+              action_items: [
+                { text: 'Send detailed proposal with mobile-first approach', assignee: 'Laura Albany', completed: true },
+                { text: 'Share analytics dashboard access', assignee: 'Sarah Chen', completed: false },
+                { text: 'Schedule stakeholder interviews', assignee: 'Alex Bennett', completed: false }
+              ]
+            },
+            { type: 'meeting_ended', title: 'Product Requirements Review', date: 'Dec 10, 2025', time: '2:30 PM', duration: '1h 20min', attendees: 4, hasRecording: true, hasTranscript: true, hasSummary: true,
+              summary: 'Comprehensive review of product requirements for the Salesforce mobile experience redesign. The team walked through user research findings, prioritized features based on impact vs. effort, and aligned on the MVP scope. Key decisions included focusing on navigation redesign and performance optimization as top priorities.',
+              chapters: [
+                { title: 'User Research Findings', timestamp: '0:00' },
+                { title: 'Feature Prioritization', timestamp: '22:30' },
+                { title: 'MVP Scope Definition', timestamp: '45:00' },
+                { title: 'Technical Constraints', timestamp: '58:15' },
+                { title: 'Timeline & Milestones', timestamp: '1:10:00' }
+              ],
+              action_items: [
+                { text: 'Document finalized requirements in PRD', assignee: 'Laura Albany', completed: true },
+                { text: 'Create wireframes for navigation redesign', assignee: 'Blake Monroe', completed: true },
+                { text: 'Conduct performance audit', assignee: 'Alex Bennett', completed: false },
+                { text: 'Schedule engineering feasibility review', assignee: 'Sarah Chen', completed: true }
+              ],
+              transcript: [
+                { speaker: 'Laura Albany', timestamp: '0:00:08', text: 'Hi everyone, let\'s dive into the product requirements review. Sarah, thanks for sharing the user research ahead of time.' },
+                { speaker: 'Sarah Chen', timestamp: '0:00:18', text: 'Of course! The data is pretty clear - 78% of our users prefer mobile, but our mobile experience is lagging behind.' },
+                { speaker: 'Alex Bennett', timestamp: '0:00:35', text: 'I noticed the navigation pain points were the top complaint. Users are struggling to find basic features.' },
+                { speaker: 'Sarah Chen', timestamp: '0:00:52', text: 'Exactly. The hamburger menu has too many nested levels. We need something more intuitive.' },
+                { speaker: 'Laura Albany', timestamp: '0:01:10', text: 'Blake has some ideas for a bottom tab bar approach. Blake, do you want to share your initial concepts?' },
+                { speaker: 'Blake Monroe', timestamp: '0:01:22', text: 'Sure, I\'ve sketched out three directions. The first uses a persistent bottom nav with the five most common actions...' }
+              ]
+            },
             { type: 'meeting_ended', title: 'Stakeholder Alignment Call', date: 'Nov 28, 2025', time: '10:00 AM', duration: '55min', attendees: 5, hasRecording: false, hasTranscript: true, hasSummary: false },
             { type: 'proposal_accepted', date: 'Jan 10, 2026', time: '9:15 AM', actor: 'Sarah Chen', documentTitle: 'Product Roadmap Consultation', amount: '$25,000' },
             { type: 'note_added', date: 'Jan 8, 2026', time: '4:30 PM', actor: 'Laura Albany', content: 'Sarah is interested in expanding the scope to include UX research. She mentioned Google is investing heavily in user research for their cloud products and wants us to lead similar initiatives for Salesforce.' },
@@ -1029,7 +1093,11 @@
           'more-horizontal': 'M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z',
           'chevron-down': 'M19 9l-7 7-7-7',
           x: 'M6 18L18 6M6 6l12 12',
-          users: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z'
+          users: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z',
+          play: 'M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+          clock: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+          eye: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z',
+          'eye-off': 'M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21'
         };
         const path = paths[name] || paths.document;
         return (
@@ -1205,7 +1273,7 @@
       };
 
       // Activity Item Renderer
-      const ActivityItem = ({ activity, contact, onEmailClick }) => {
+      const ActivityItem = ({ activity, contact, onEmailClick, onMeetingClick }) => {
         const renderTitle = () => {
           const actorName = activity.actor;
           const isContact = actorName === contact.name;
@@ -1320,19 +1388,25 @@
           // Meeting ended - show card with details
           if (activity.type === 'meeting_ended') {
             return (
-              <div className="timeline-card">
+              <div
+                className="timeline-card"
+                style={{ cursor: 'pointer', transition: 'all 150ms' }}
+                onClick={() => onMeetingClick?.(activity)}
+                onMouseOver={(e) => e.currentTarget.style.background = '#f5f5f5'}
+                onMouseOut={(e) => e.currentTarget.style.background = 'var(--bg-white)'}
+              >
                 <div className="card-content">
                   <div style={{ width: '32px', height: '32px', background: '#e3f2fd', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Icon name="video" style={{ color: '#1976d2', width: '16px', height: '16px' }} />
                   </div>
                   <div style={{ flex: 1 }}>
                     <div className="card-title">{activity.title}</div>
-                    <div className="card-meta">Meeting — {activity.date} — {activity.time} 👤 {activity.attendees}</div>
-                    {activity.hasRecording && (
+                    <div className="card-meta">Duration: {activity.duration} · {activity.attendees} participants</div>
+                    {(activity.hasRecording || activity.hasSummary || activity.hasTranscript) && (
                       <div style={{ display: 'flex', gap: '12px', marginTop: '8px', fontSize: '12px' }}>
-                        <a href="#" style={{ color: 'var(--bonsai-green)', textDecoration: 'none' }}>🎥 Recording</a>
-                        {activity.hasSummary && <a href="#" style={{ color: 'var(--bonsai-green)', textDecoration: 'none' }}>📝 Summary</a>}
-                        {activity.hasTranscript && <a href="#" style={{ color: 'var(--bonsai-green)', textDecoration: 'none' }}>📄 Transcript</a>}
+                        {activity.hasRecording && <span style={{ color: '#1976d2', display: 'flex', alignItems: 'center', gap: '4px' }}><Icon name="video" className="w-3" /> Recording</span>}
+                        {activity.hasSummary && <span style={{ color: 'var(--bonsai-green)', display: 'flex', alignItems: 'center', gap: '4px' }}><Icon name="document" className="w-3" /> Summary</span>}
+                        {activity.hasTranscript && <span style={{ color: '#7c3aed', display: 'flex', alignItems: 'center', gap: '4px' }}><Icon name="document" className="w-3" /> Transcript</span>}
                       </div>
                     )}
                   </div>
@@ -1695,10 +1769,226 @@
         );
       };
 
+      // Meeting Drawer Component
+      const MeetingDrawer = ({ meeting, onClose }) => {
+        const [activeTab, setActiveTab] = useState('Summary');
+        const [comments, setComments] = useState([
+          { id: 1, author: 'Lucas Did', date: 'Jan 27, 2026, 3:15 PM', content: 'Great meeting! Follow up with the team on action items.' },
+        ]);
+        const [isAddingComment, setIsAddingComment] = useState(false);
+
+        const handleAddComment = (content) => {
+          const newComment = {
+            id: Date.now(),
+            author: 'Lucas Did',
+            date: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }),
+            content,
+          };
+          setComments([newComment, ...comments]);
+          setIsAddingComment(false);
+        };
+
+        const handleDeleteComment = (id) => setComments(comments.filter(c => c.id !== id));
+
+        if (!meeting) return null;
+
+        return (
+          <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex' }}>
+            {/* Backdrop */}
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)' }} onClick={onClose} />
+
+            {/* Drawer */}
+            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '100%', maxWidth: '640px', background: 'var(--bg-white)', boxShadow: '0 20px 60px rgba(0,0,0,0.3)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+              {/* Header */}
+              <div style={{ background: 'var(--bg-white)', borderBottom: '1px solid var(--border-light)', padding: '16px 24px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <h1 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>{meeting.title}</h1>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '8px', fontSize: '14px', color: 'var(--text-secondary)', flexWrap: 'wrap' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Icon name="calendar" className="w-4" />
+                        {meeting.date} at {meeting.time}
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Icon name="users" className="w-4" />
+                        {meeting.attendees} participants
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Icon name="clock" className="w-4" />
+                        {meeting.duration}
+                      </span>
+                    </div>
+                  </div>
+                  <button onClick={onClose} style={{ color: 'var(--text-tertiary)', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px' }}>
+                    <Icon name="x" className="w-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Recording Preview */}
+              {meeting.hasRecording && (
+                <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border-light)', background: '#fafafa' }}>
+                  <div style={{ background: '#1a1a1a', borderRadius: '8px', aspectRatio: '16/9', maxHeight: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', cursor: 'pointer' }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.5))', borderRadius: '8px' }} />
+                    <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(255,255,255,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
+                      <Icon name="play" style={{ width: '24px', height: '24px', color: '#1a1a1a', marginLeft: '2px' }} />
+                    </div>
+                    <div style={{ position: 'absolute', bottom: '12px', left: '12px', right: '12px', display: 'flex', justifyContent: 'space-between', color: 'white', fontSize: '12px' }}>
+                      <span>Recording available</span>
+                      <span>{meeting.duration}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tabs */}
+              <div style={{ borderBottom: '1px solid var(--border-light)', padding: '0 24px' }}>
+                <div style={{ display: 'flex', gap: '24px' }}>
+                  {['Summary', 'Transcript', 'Comments'].map(tab => (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      style={{
+                        padding: '12px 0',
+                        fontSize: '14px',
+                        fontWeight: 500,
+                        background: 'transparent',
+                        border: 'none',
+                        borderBottom: activeTab === tab ? '2px solid var(--text-primary)' : '2px solid transparent',
+                        color: activeTab === tab ? 'var(--text-primary)' : 'var(--text-secondary)',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Content */}
+              <div style={{ flex: 1, overflow: 'auto', padding: '24px' }}>
+                {activeTab === 'Summary' && (
+                  <div>
+                    <div style={{ marginBottom: '24px' }}>
+                      <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>Summary</h3>
+                      <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>{meeting.summary || 'The team discussed project timelines, budget allocation, and next steps. Key decisions were made regarding the Q1 roadmap and resource allocation for the upcoming sprint.'}</p>
+                    </div>
+
+                    {meeting.chapters && meeting.chapters.length > 0 && (
+                      <div style={{ paddingTop: '16px', borderTop: '1px solid var(--border-light)', marginBottom: '24px' }}>
+                        <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '12px' }}>Chapters</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                          {meeting.chapters.map((chapter, idx) => (
+                            <div key={idx} style={{ display: 'flex', gap: '12px' }}>
+                              <span style={{ fontSize: '12px', color: '#1976d2', fontWeight: 500, width: '40px', flexShrink: 0 }}>{chapter.timestamp}</span>
+                              <div>
+                                <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>{chapter.title}</p>
+                                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>{chapter.summary}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {meeting.action_items && meeting.action_items.length > 0 && (
+                      <div style={{ paddingTop: '16px', borderTop: '1px solid var(--border-light)' }}>
+                        <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '12px' }}>Action Items</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          {meeting.action_items.map((item, idx) => (
+                            <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                              <div style={{ width: '16px', height: '16px', borderRadius: '4px', border: '1px solid var(--border-light)', flexShrink: 0, marginTop: '2px' }} />
+                              <div style={{ fontSize: '14px' }}>
+                                <span style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{item.assignee}:</span>
+                                <span style={{ color: 'var(--text-secondary)', marginLeft: '4px' }}>{item.task}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'Transcript' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {meeting.transcript && meeting.transcript.length > 0 ? meeting.transcript.map((entry, idx) => (
+                      <div key={idx} style={{ display: 'flex', gap: '12px' }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#1976d2', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: 500, flexShrink: 0 }}>
+                          {entry.speaker.split(' ').map(n => n[0]).join('')}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '4px' }}>
+                            <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{entry.speaker}</span>
+                            <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>{entry.time}</span>
+                          </div>
+                          <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>{entry.text}</p>
+                        </div>
+                      </div>
+                    )) : (
+                      <p style={{ fontSize: '14px', color: 'var(--text-tertiary)', textAlign: 'center', padding: '32px' }}>No transcript available for this meeting.</p>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'Comments' && (
+                  <div>
+                    {isAddingComment ? (
+                      <div style={{ marginBottom: '16px', border: '1px solid var(--border-light)', borderRadius: '8px', overflow: 'hidden' }}>
+                        <textarea
+                          placeholder="Add a comment..."
+                          style={{ width: '100%', padding: '12px 16px', fontSize: '14px', border: 'none', outline: 'none', minHeight: '80px', resize: 'none', fontFamily: 'inherit' }}
+                          autoFocus
+                          id="comment-textarea"
+                        />
+                        <div style={{ display: 'flex', gap: '8px', padding: '8px 12px', borderTop: '1px solid var(--border-light)' }}>
+                          <button onClick={() => setIsAddingComment(false)} style={{ padding: '6px 16px', fontSize: '14px', color: 'var(--text-primary)', border: '1px solid var(--border-light)', background: 'transparent', borderRadius: '8px', cursor: 'pointer' }}>Cancel</button>
+                          <button onClick={() => { const textarea = document.getElementById('comment-textarea'); if (textarea.value.trim()) handleAddComment(textarea.value); }} style={{ padding: '6px 16px', fontSize: '14px', color: 'white', background: 'var(--bonsai-green)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Add Comment</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button onClick={() => setIsAddingComment(true)} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-tertiary)', background: 'transparent', border: 'none', cursor: 'pointer', marginBottom: '16px', padding: '8px 0', fontSize: '14px' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--text-primary)'} onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-tertiary)'}>
+                        <Icon name="plus" className="w-4" /><span>Add Comment</span>
+                      </button>
+                    )}
+                    <div>
+                      {comments.map((comment, index) => (
+                        <div key={comment.id} style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
+                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <div style={{ width: '32px', height: '32px', background: '#e5e5e5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)', flexShrink: 0 }}>
+                              {comment.author.split(' ').map(n => n[0]).join('')}
+                            </div>
+                            {index < comments.length - 1 && <div style={{ width: '1px', background: '#e5e5e5', flex: 1, minHeight: '16px' }} />}
+                          </div>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>{comment.author}</span>
+                              <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>{comment.date}</span>
+                              <button onClick={() => handleDeleteComment(comment.id)} style={{ marginLeft: 'auto', color: 'var(--text-tertiary)', background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px' }}>
+                                <Icon name="x" className="w-3" />
+                              </button>
+                            </div>
+                            <p style={{ fontSize: '14px', color: 'var(--text-primary)', marginTop: '4px' }}>{comment.content}</p>
+                          </div>
+                        </div>
+                      ))}
+                      {comments.length === 0 && !isAddingComment && (
+                        <p style={{ fontSize: '14px', color: 'var(--text-tertiary)', textAlign: 'center', padding: '32px' }}>No comments yet. Be the first to add one!</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      };
+
       // Contact Detail Page
       const ContactDetail = ({ contact, onBack }) => {
         const [activeTab, setActiveTab] = useState('activity');
         const [selectedEmail, setSelectedEmail] = useState(null);
+        const [selectedMeeting, setSelectedMeeting] = useState(null);
         const [notes, setNotes] = useState([
           {
             id: 1,
@@ -1722,6 +2012,7 @@
         return (
           <>
             {selectedEmail && <EmailModal email={selectedEmail} onClose={() => setSelectedEmail(null)} />}
+            {selectedMeeting && <MeetingDrawer meeting={selectedMeeting} onClose={() => setSelectedMeeting(null)} />}
             <div className="detail-page">
             <div className="detail-topbar">
               <div className="breadcrumb-topbar">
@@ -1794,7 +2085,7 @@
                       <div className="section-title">History</div>
                       <div className="activity-timeline">
                         {pastActivities.map((activity, idx) => (
-                          <ActivityItem key={activity.id} activity={activity} contact={contact} onEmailClick={setSelectedEmail} />
+                          <ActivityItem key={activity.id} activity={activity} contact={contact} onEmailClick={setSelectedEmail} onMeetingClick={setSelectedMeeting} />
                         ))}
                       </div>
                     </div>
@@ -1824,7 +2115,7 @@
                       <div className="section-title">History</div>
                       <div className="activity-timeline">
                         {pastActivities.filter(a => a.type === 'note_added').map((activity, idx) => (
-                          <ActivityItem key={activity.id} activity={activity} contact={contact} onEmailClick={setSelectedEmail} />
+                          <ActivityItem key={activity.id} activity={activity} contact={contact} onEmailClick={setSelectedEmail} onMeetingClick={setSelectedMeeting} />
                         ))}
                       </div>
                     </div>
@@ -1861,7 +2152,7 @@
                       <div className="section-title">History</div>
                       <div className="activity-timeline">
                         {pastActivities.filter(a => a.type.includes('meeting')).map((activity, idx) => (
-                          <ActivityItem key={activity.id} activity={activity} contact={contact} onEmailClick={setSelectedEmail} />
+                          <ActivityItem key={activity.id} activity={activity} contact={contact} onEmailClick={setSelectedEmail} onMeetingClick={setSelectedMeeting} />
                         ))}
                       </div>
                     </div>
@@ -1874,7 +2165,7 @@
                       <div className="section-title">History</div>
                       <div className="activity-timeline">
                         {pastActivities.filter(a => a.type.includes('email')).map((activity, idx) => (
-                          <ActivityItem key={activity.id} activity={activity} contact={contact} onEmailClick={setSelectedEmail} />
+                          <ActivityItem key={activity.id} activity={activity} contact={contact} onEmailClick={setSelectedEmail} onMeetingClick={setSelectedMeeting} />
                         ))}
                       </div>
                     </div>
