@@ -112,6 +112,7 @@ const ContactDetail = ({ contact, onBack }) => {
                       key={activity.id}
                       activity={activity}
                       isLast={index === pastActivities.length - 1}
+                      contactName={contact.name}
                     />
                   ))}
                 </div>
@@ -211,18 +212,24 @@ const UpcomingMeetingCard = ({ activity }) => (
 );
 
 // Activity Timeline Item
-const ActivityItem = ({ activity, isLast }) => {
+const ActivityItem = ({ activity, isLast, contactName }) => {
   const config = eventTypeConfig[activity.type];
   const IconComponent = getIconComponent(config.icon);
+  const isSystemEvent = activity.type === 'meeting_ended' || activity.type === 'contact_created';
 
   return (
     <div className={`activity-item ${isLast ? 'last' : ''}`}>
       <div className="activity-icon-wrapper" style={{ backgroundColor: `${config.color}15` }}>
         <IconComponent className="activity-icon" style={{ color: config.color }} />
       </div>
+      {!isSystemEvent && activity.actor && (
+        <div className="activity-avatar" title={activity.actor}>
+          {activity.actorInitials || activity.actor.split(' ').map(n => n[0]).join('')}
+        </div>
+      )}
       <div className="activity-content">
         <div className="activity-header">
-          <span className="activity-title">{renderActivityTitle(activity)}</span>
+          <span className="activity-title">{renderActivityTitle(activity, contactName)}</span>
           <span className="activity-date">
             {activity.date}, {activity.time}
           </span>
@@ -234,40 +241,40 @@ const ActivityItem = ({ activity, isLast }) => {
 };
 
 // Helper function to render activity title
-const renderActivityTitle = (activity) => {
+const renderActivityTitle = (activity, contactName) => {
+  const actor = activity.actor;
   switch (activity.type) {
     case 'meeting_scheduled':
-      return `${activity.actor} scheduled a meeting`;
+      return <>{actor} scheduled a meeting</>;
     case 'meeting_ended':
-      return 'Meeting completed';
+      return <>Meeting completed</>;
     case 'note_added':
-      return `${activity.actor} added a note`;
+      return <>{actor} added a note</>;
     case 'proposal_sent':
-      return `${activity.actor} sent a proposal`;
+      return <>{actor} sent proposal <strong>{activity.documentTitle}</strong></>;
     case 'proposal_accepted':
-      return `${activity.actor} accepted proposal`;
+      return <>{actor} accepted proposal <strong>{activity.documentTitle}</strong></>;
     case 'contract_sent':
-      return `${activity.actor} sent a contract`;
+      return <>{actor} sent contract <strong>{activity.documentTitle}</strong></>;
     case 'contract_signed':
-      return `${activity.actor} signed the contract`;
+      return <>{actor} signed contract <strong>{activity.documentTitle}</strong></>;
     case 'invoice_sent':
-      return `${activity.actor} sent an invoice`;
+      return <>{actor} sent invoice <strong>{activity.invoiceNumber}</strong></>;
     case 'invoice_paid':
-      return `${activity.actor} paid invoice`;
+      return <>{actor} paid invoice <strong>{activity.invoiceNumber}</strong></>;
     case 'deal_assigned':
-      return `${activity.actor} assigned a deal`;
+      return <>{actor} assigned deal <strong>{activity.dealName}</strong> ({activity.dealValue}){contactName ? <> to {contactName}</> : null}</>;
     case 'client_portal_message':
-      return `${activity.actor} sent a message in client portal`;
+      return <>{actor} sent a message in client portal</>;
     case 'project_email_sent':
-      return `${activity.actor} sent an email`;
     case 'project_email_received':
-      return `${activity.actor} sent an email`;
+      return <>{actor} sent an email</>;
     case 'contact_property_updated':
-      return `${activity.actor} updated contact`;
+      return <>{actor} updated {activity.field}: "{activity.oldValue}" → "{activity.newValue}"</>;
     case 'contact_created':
-      return `Contact created by ${activity.actor}`;
+      return <>Contact created by {activity.createdBy === 'manual' ? actor : `system`}</>;
     default:
-      return 'Activity';
+      return <>Activity</>;
   }
 };
 
@@ -275,6 +282,7 @@ const renderActivityTitle = (activity) => {
 const renderActivityBody = (activity) => {
   switch (activity.type) {
     case 'meeting_scheduled':
+      return null;
     case 'meeting_ended':
       return (
         <div className="meeting-preview">
@@ -286,66 +294,88 @@ const renderActivityBody = (activity) => {
                 {activity.duration && `Duration: ${activity.duration} • `}
                 {activity.attendees} participants
               </p>
-              {activity.hasRecording && (
-                <div className="meeting-badges">
+              <div className="meeting-badges">
+                {activity.hasRecording && (
                   <span className="badge badge-blue">
                     <Video className="w-3 h-3" />
                     Recording
                   </span>
-                  {activity.hasSummary && (
-                    <span className="badge badge-green">
-                      <FileText className="w-3 h-3" />
-                      Summary
-                    </span>
-                  )}
-                  {activity.hasTranscript && (
-                    <span className="badge badge-purple">
-                      <FileText className="w-3 h-3" />
-                      Transcript
-                    </span>
-                  )}
-                </div>
-              )}
+                )}
+                {activity.hasSummary && (
+                  <span className="badge badge-green">
+                    <FileText className="w-3 h-3" />
+                    Summary
+                  </span>
+                )}
+                {activity.hasTranscript && (
+                  <span className="badge badge-purple">
+                    <FileText className="w-3 h-3" />
+                    Transcript
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
       );
 
     case 'note_added':
-    case 'client_portal_message':
       return (
         <div className="activity-note">
           <p>{activity.content}</p>
         </div>
       );
 
-    case 'proposal_sent':
-    case 'proposal_accepted':
-    case 'contract_sent':
-    case 'contract_signed':
+    case 'client_portal_message':
       return (
-        <div className="document-preview">
-          <FileText className="w-4 h-4" />
-          <div>
-            <p className="document-title">{activity.documentTitle}</p>
-            {activity.amount && <p className="document-amount">{activity.amount}</p>}
+        <>
+          <div className="activity-note">
+            <p>{activity.content}</p>
           </div>
-        </div>
+          <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Message</a>
+        </>
       );
 
-    case 'invoice_sent':
-    case 'invoice_paid':
+    case 'proposal_sent':
+    case 'contract_sent':
       return (
-        <div className="document-preview">
-          <FileText className="w-4 h-4" />
-          <div>
-            <p className="document-title">Invoice {activity.invoiceNumber}</p>
-            <p className="document-amount">{activity.amount}</p>
-            {activity.dueDate && <p className="document-meta">Due: {activity.dueDate}</p>}
-            {activity.paymentMethod && <p className="document-meta">Paid via {activity.paymentMethod}</p>}
+        <>
+          <div className="document-preview">
+            <FileText className="w-4 h-4" />
+            <div>
+              <p className="document-title">{activity.documentTitle}</p>
+              {activity.amount && <p className="document-amount">{activity.amount}</p>}
+            </div>
           </div>
-        </div>
+          {activity.sentVia !== 'url' && (
+            <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Email</a>
+          )}
+        </>
       );
+
+    case 'proposal_accepted':
+    case 'contract_signed':
+      return null;
+
+    case 'invoice_sent':
+      return (
+        <>
+          <div className="document-preview">
+            <FileText className="w-4 h-4" />
+            <div>
+              <p className="document-title">Invoice {activity.invoiceNumber}</p>
+              <p className="document-amount">{activity.amount}</p>
+              {activity.dueDate && <p className="document-meta">Due: {activity.dueDate}</p>}
+            </div>
+          </div>
+          {activity.sentVia !== 'url' && (
+            <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Email</a>
+          )}
+        </>
+      );
+
+    case 'invoice_paid':
+      return null;
 
     case 'deal_assigned':
       return (
@@ -361,29 +391,18 @@ const renderActivityBody = (activity) => {
     case 'project_email_sent':
     case 'project_email_received':
       return (
-        <div className="activity-note">
-          <p className="email-subject"><strong>{activity.subject}</strong></p>
-          <p className="email-preview">{activity.preview}</p>
-        </div>
+        <>
+          <div className="activity-note">
+            <p className="email-subject"><strong>{activity.subject}</strong></p>
+            <p className="email-preview">{activity.preview}</p>
+          </div>
+          <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Email</a>
+        </>
       );
 
     case 'contact_property_updated':
-      return (
-        <div className="activity-note">
-          <p>
-            Changed <strong>{activity.field}</strong> from "{activity.oldValue}" to "{activity.newValue}"
-          </p>
-        </div>
-      );
-
     case 'contact_created':
-      return (
-        <div className="activity-note">
-          <p>
-            Created {activity.createdBy === 'manual' ? 'manually' : 'by system'}
-          </p>
-        </div>
-      );
+      return null;
 
     default:
       return null;
