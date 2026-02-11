@@ -109,11 +109,12 @@ export const Phone = ({ className = "w-4 h-4", ...props }) => (
   </svg>
 );
 
+// Deal icon - three right-pointing chevrons (green per spec)
 export const DealsIcon = ({ className = "w-4 h-4", ...props }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" {...props}>
-    <path d="M5 5a9.9 9.9 0 0 1 0 14" />
-    <path d="M9 8a5.7 5.7 0 0 1 0 8" />
-    <path d="M13 10.5a2.1 2.1 0 0 1 0 3" />
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M6 8l4 4-4 4" />
+    <path d="M11 8l4 4-4 4" />
+    <path d="M16 8l4 4-4 4" />
   </svg>
 );
 

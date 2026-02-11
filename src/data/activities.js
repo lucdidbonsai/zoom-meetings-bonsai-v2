@@ -33,12 +33,12 @@ const allActivities = {
     {
       id: 'act-3',
       type: 'note_added',
-      date: 'Jan 18, 2026',
-      time: '11:15 AM',
-      timestamp: '2026-01-18T11:15:00',
-      actor: 'Laura Albany',
-      actorInitials: 'LA',
-      content: 'Michael confirmed budget approval for Q1 marketing strategy. Moving forward with the $85K proposal.',
+      date: 'Today',
+      time: '8:15:19 AM',
+      timestamp: new Date().toISOString().split('T')[0] + 'T08:15:19',
+      actor: 'Lucas Did',
+      actorInitials: 'LD',
+      content: 'This is a very lengthy note. This is a very lengthy note. This is a very lengthy note. This is a very lengthy note. This is a very lengthy note. This is a very lengthy note. This is a very lengthy note. This is a very',
       pinned: false
     },
     {
@@ -56,11 +56,11 @@ const allActivities = {
     {
       id: 'act-5',
       type: 'meeting_ended',
-      title: 'Budget Review & Resource Allocation',
-      date: 'Jan 12, 2026',
-      time: '2:30 PM',
-      timestamp: '2026-01-12T14:30:00',
-      duration: '1h 36min',
+      title: 'Stakeholder Alignment Call',
+      date: 'Nov 28, 2025',
+      time: '10:00 AM',
+      timestamp: '2025-11-28T10:00:00',
+      duration: '55min',
       attendees: 5,
       actor: 'System',
       actorInitials: 'S',
@@ -124,7 +124,7 @@ const allActivities = {
       timestamp: '2025-12-20T10:30:00',
       actor: 'Laura Albany',
       actorInitials: 'LA',
-      dealName: 'Adobe Q1 Marketing Engagement',
+      dealName: 'Marketing Retainer 2025',
       dealValue: '$85,000',
       stage: 'Proposal Sent'
     },
@@ -163,13 +163,15 @@ const allActivities = {
     {
       id: 'act-13',
       type: 'contract_sent',
-      date: 'Dec 12, 2025',
-      time: '2:00 PM',
-      timestamp: '2025-12-12T14:00:00',
-      actor: 'Laura Albany',
-      actorInitials: 'LA',
-      documentTitle: 'Marketing Services Agreement',
-      documentType: 'contract'
+      date: 'Today',
+      time: '7:48:26 AM',
+      timestamp: new Date().toISOString().split('T')[0] + 'T07:48:26',
+      actor: 'Lucas Did',
+      actorInitials: 'LD',
+      documentTitle: 'Independent Contractor Agreement',
+      documentType: 'contract',
+      sentVia: 'email',
+      recipientEmail: 'lucas.didier+testclienportal@gmail.com'
     },
     {
       id: 'act-14',
@@ -2437,6 +2439,17 @@ const allActivities = {
 
 export const getActivitiesForContact = (contactId) => {
   return allActivities[contactId] || [];
+};
+
+// Format date/time for display - "Today" when same day, otherwise formatted date
+export const formatActivityDateTime = (timestamp) => {
+  if (!timestamp) return { date: '', time: '' };
+  const d = new Date(timestamp);
+  const now = new Date();
+  const isToday = d.toDateString() === now.toDateString();
+  const date = isToday ? 'Today' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
+  return { date, time };
 };
 
 // Event type metadata for rendering

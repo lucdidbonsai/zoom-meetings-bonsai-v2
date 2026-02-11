@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { getActivitiesForContact, eventTypeConfig } from '../data/activities';
+import { getActivitiesForContact, eventTypeConfig, formatActivityDateTime } from '../data/activities';
 import { getIconComponent, Plus, MoreHorizontal, Calendar, Mail, Phone, FileText, Video, DealsIcon } from './Icons';
 
 // Truncatable Note Component
@@ -32,7 +32,9 @@ const ContactDetail = ({ contact, onBack }) => {
   const activities = getActivitiesForContact(contact.id);
 
   const upcomingActivities = activities.filter(a => a.upcoming);
-  const pastActivities = activities.filter(a => !a.upcoming);
+  const pastActivities = activities
+    .filter(a => !a.upcoming)
+    .sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
 
   const tabs = ['activity', 'notes', 'meetings'];
 
@@ -237,28 +239,36 @@ const UpcomingMeetingCard = ({ activity }) => (
   </div>
 );
 
-// Activity Timeline Item
+// Activity Timeline Item - Spec: 1) Timeline icon (always) + vertical line, 2) Avatar (user events only), 3) Action link (conditional, right), 4) Widget (conditional), 5) Text preview (conditional)
 const ActivityItem = ({ activity, isLast, contactName, contactEmail }) => {
   const config = eventTypeConfig[activity.type];
   const IconComponent = getIconComponent(config.icon);
-  const isSystemEvent = activity.type === 'meeting_ended' || activity.type === 'contact_created';
+  const isSystemEvent = activity.actor === 'System' || (activity.type === 'contact_created' && activity.createdBy !== 'manual');
+  const { date, time } = activity.timestamp ? formatActivityDateTime(activity.timestamp) : { date: activity.date, time: activity.time };
 
   return (
     <div className={`activity-item ${isLast ? 'last' : ''}`}>
-      <div className="activity-icon-wrapper" style={{ backgroundColor: `${config.color}15` }}>
-        <IconComponent className="activity-icon" style={{ color: config.color }} />
-      </div>
-      {!isSystemEvent && activity.actor && (
-        <div className="activity-avatar" title={activity.actor}>
-          {activity.actorInitials || activity.actor.split(' ').map(n => n[0]).join('')}
+      {/* 1. Timeline icon + vertical line (always) */}
+      <div className="activity-timeline-col">
+        <div className="activity-icon-wrapper" style={{ backgroundColor: `${config.color}15`, color: config.color }}>
+          <IconComponent className="activity-icon" style={{ color: config.color }} />
         </div>
-      )}
-      <div className="activity-content">
-        <div className="activity-header">
-          <span className="activity-title">{renderActivityTitle(activity, contactName, contactEmail)}</span>
-          <span className="activity-date">
-            {activity.date}, {activity.time}
-          </span>
+        {!isLast && <div className="activity-timeline-line" />}
+      </div>
+
+      {/* 2-5. Main content area */}
+      <div className="activity-main">
+        <div className="activity-header-row">
+          {!isSystemEvent && activity.actor && (
+            <div className="activity-avatar" title={activity.actor}>
+              {activity.actorInitials || activity.actor.split(' ').map(n => n[0]).join('')}
+            </div>
+          )}
+          <div className="activity-text-block">
+            <span className="activity-title">{renderActivityTitle(activity, contactName, contactEmail)}</span>
+            <span className="activity-datetime"> {date} {time}</span>
+          </div>
+          {renderActionLink(activity)}
         </div>
         {renderActivityBody(activity)}
       </div>
@@ -266,7 +276,24 @@ const ActivityItem = ({ activity, isLast, contactName, contactEmail }) => {
   );
 };
 
-// Helper function to render activity title
+// Action link - conditional, right-aligned. Only for events that generated emails/messages
+const renderActionLink = (activity) => {
+  if (activity.type === 'contract_sent' && activity.sentVia !== 'url') {
+    return <a href="#" className="activity-action-link-right" onClick={(e) => e.preventDefault()}>View Email</a>;
+  }
+  if (activity.type === 'invoice_sent' && activity.sentVia !== 'url') {
+    return <a href="#" className="activity-action-link-right" onClick={(e) => e.preventDefault()}>View Email</a>;
+  }
+  if (activity.type === 'project_email_sent' || activity.type === 'project_email_received') {
+    return <a href="#" className="activity-action-link-right" onClick={(e) => e.preventDefault()}>View Email</a>;
+  }
+  if (activity.type === 'client_portal_message') {
+    return <a href="#" className="activity-action-link-right" onClick={(e) => e.preventDefault()}>View Message</a>;
+  }
+  return null;
+};
+
+// Helper function to render activity title (without date - date is shown inline separately)
 const renderActivityTitle = (activity, contactName, contactEmail) => {
   const actor = activity.actor;
   switch (activity.type) {
@@ -281,7 +308,7 @@ const renderActivityTitle = (activity, contactName, contactEmail) => {
     case 'proposal_accepted':
       return <>{actor} accepted proposal <strong>{activity.documentTitle}</strong></>;
     case 'contract_sent':
-      return <>{actor} sent the <span className="activity-entity-link">contract</span> to {contactEmail}</>;
+      return <>{actor} sent the <span className="activity-entity-link">contract</span> to {activity.recipientEmail || contactEmail}</>;
     case 'contract_viewed':
       return <>{contactName} has viewed <span className="activity-entity-link">contract</span> for the first time.</>;
     case 'contract_signed':
@@ -314,36 +341,20 @@ const renderActivityBody = (activity) => {
 
     case 'meeting_ended':
       return (
-        <div className="meeting-preview">
-          <div className="meeting-preview-header">
+        <div className="activity-widget activity-widget-meeting">
+          <div className="activity-widget-meeting-icon">
             <Video className="w-4 h-4" />
-            <div>
-              <p className="meeting-preview-title">{activity.title}</p>
-              <p className="meeting-preview-meta">
-                {activity.duration && `Duration: ${activity.duration} • `}
-                {activity.attendees} participants
-              </p>
-              <div className="meeting-badges">
-                {activity.hasRecording && (
-                  <span className="badge badge-blue">
-                    <Video className="w-3 h-3" />
-                    Recording
-                  </span>
-                )}
-                {activity.hasSummary && (
-                  <span className="badge badge-green">
-                    <FileText className="w-3 h-3" />
-                    Summary
-                  </span>
-                )}
-                {activity.hasTranscript && (
-                  <span className="badge badge-purple">
-                    <FileText className="w-3 h-3" />
-                    Transcript
-                  </span>
-                )}
-              </div>
-            </div>
+          </div>
+          <div className="activity-widget-meeting-content">
+            <p className="activity-widget-meeting-title">{activity.title}</p>
+            <p className="activity-widget-meeting-meta">
+              {activity.duration ? `Duration: ${activity.duration}` : ''}
+              {activity.duration && activity.attendees ? ' · ' : ''}
+              {activity.attendees ? `${activity.attendees} participants` : ''}
+            </p>
+            {activity.hasTranscript && (
+              <a href="#" className="activity-widget-meeting-link" onClick={(e) => e.preventDefault()}>Transcript</a>
+            )}
           </div>
         </div>
       );
@@ -352,44 +363,29 @@ const renderActivityBody = (activity) => {
       return <TruncatableNote content={activity.content} />;
 
     case 'client_portal_message':
-      return (
-        <>
-          <TruncatableNote content={activity.content} />
-          <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Message</a>
-        </>
-      );
+      return <TruncatableNote content={activity.content} />;
 
     case 'proposal_sent':
     case 'contract_sent':
       return (
-        <>
-          <div className="document-chip">
-            <FileText className="document-chip-icon" />
-            <span>{activity.documentTitle}</span>
-          </div>
-          {activity.sentVia !== 'url' && (
-            <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Email</a>
-          )}
-        </>
+        <div className="activity-widget activity-widget-document">
+          <FileText className="activity-widget-icon activity-widget-icon-contract" />
+          <span>{activity.documentTitle}</span>
+        </div>
       );
 
     case 'invoice_sent':
       return (
-        <>
-          <div className="document-chip">
-            <FileText className="document-chip-icon" />
-            <span>Invoice {activity.invoiceNumber}</span>
-          </div>
-          {activity.sentVia !== 'url' && (
-            <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Email</a>
-          )}
-        </>
+        <div className="activity-widget activity-widget-document">
+          <FileText className="activity-widget-icon activity-widget-icon-invoice" />
+          <span>Invoice {activity.invoiceNumber}</span>
+        </div>
       );
 
     case 'deal_assigned':
       return (
-        <div className="document-chip">
-          <DealsIcon className="document-chip-icon" />
+        <div className="activity-widget activity-widget-deal">
+          <DealsIcon className="activity-widget-icon activity-widget-icon-deal" />
           <span>{activity.dealName}</span>
         </div>
       );
@@ -405,13 +401,10 @@ const renderActivityBody = (activity) => {
     case 'project_email_sent':
     case 'project_email_received':
       return (
-        <>
-          <div className="activity-note">
-            <p className="email-subject"><strong>{activity.subject}</strong></p>
-            <p className="email-preview">{activity.preview}</p>
-          </div>
-          <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Email</a>
-        </>
+        <div className="activity-note">
+          <p className="email-subject"><strong>{activity.subject}</strong></p>
+          <p className="email-preview">{activity.preview}</p>
+        </div>
       );
 
     default:
