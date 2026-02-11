@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { contacts } from './data/contacts';
 import ContactDetail from './components/ContactDetail';
-import { Search, ChevronRight, InvoiceIcon, ContractIcon, ProposalIcon } from './components/Icons';
+import { Search, ChevronRight, InvoiceIcon, ContractIcon, ProposalIcon, Filter, MoreVertical } from './components/Icons';
 import './App.css';
+
+const formatBirthday = (str) => {
+  if (!str) return '';
+  const d = new Date(str);
+  if (isNaN(d.getTime())) return str;
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+};
 
 function App() {
   const [selectedContact, setSelectedContact] = useState(null);
@@ -53,53 +60,82 @@ function App() {
           </button>
         </div>
 
-        {/* Search Bar */}
-        <div className="search-container">
+        {/* Search and Filter */}
+        <div className="contacts-toolbar">
           <div className="search-input-wrapper">
             <Search className="search-icon" />
             <input
               type="text"
               className="search-input"
-              placeholder="Search contacts..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
+          <button className="btn btn-default btn-filter">
+            <Filter className="w-4 h-4" />
+            Filter
+          </button>
         </div>
 
-        {/* Contacts List */}
-        <div className="contacts-list">
-          {filteredContacts.map((contact) => (
-            <div
-              key={contact.id}
-              className="contact-card"
-              onClick={() => setSelectedContact(contact)}
-            >
-              <div className="contact-card-content">
-                <div className="contact-avatar-section">
-                  <div className="contact-avatar">
-                    {contact.avatar ? (
-                      <img src={contact.avatar} alt={contact.name} className="contact-avatar-img" />
-                    ) : (
-                      contact.initials
-                    )}
-                  </div>
-                  <div className="contact-info">
-                    <h3 className="contact-name">{contact.name}</h3>
-                    <p className="contact-role">{contact.role}</p>
-                  </div>
-                </div>
-                <div className="contact-meta">
-                  <div className="company-badge" style={{ backgroundColor: contact.companyColor }}>
-                    <span className="company-initials">{contact.companyInitials}</span>
-                    <span className="company-name">{contact.company}</span>
-                  </div>
-                  <div className="contact-email">{contact.email}</div>
-                </div>
-              </div>
-              <ChevronRight className="contact-arrow" />
-            </div>
-          ))}
+        {/* Contacts Table */}
+        <div className="contacts-table-container">
+          <table className="contacts-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Job Title</th>
+                <th>Company</th>
+                <th>Phone Number</th>
+                <th>Birthday</th>
+                <th>Comments</th>
+                <th className="contacts-table-actions">
+                  <button className="btn-icon-sm" onClick={(e) => e.stopPropagation()}>
+                    <MoreVertical className="w-4 h-4" />
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredContacts.map((contact) => (
+                <tr
+                  key={contact.id}
+                  className="contacts-table-row"
+                  onClick={() => setSelectedContact(contact)}
+                >
+                  <td>
+                    <div className="contacts-table-name">
+                      <div className="contact-avatar contact-avatar-sm">
+                        {contact.avatar ? (
+                          <img src={contact.avatar} alt={contact.name} className="contact-avatar-img" />
+                        ) : (
+                          contact.initials
+                        )}
+                      </div>
+                      <span>{contact.name}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span className="contacts-table-email">
+                      {contact.email}
+                      <span className="email-status-dot" title="Verified" />
+                    </span>
+                  </td>
+                  <td>{contact.role || '—'}</td>
+                  <td>{contact.company}</td>
+                  <td className="contacts-table-muted">{contact.phone || 'Add phone'}</td>
+                  <td className="contacts-table-muted">{contact.birthday ? formatBirthday(contact.birthday) : 'Add birthday'}</td>
+                  <td className="contacts-table-comments">{contact.comments || 'Add comments'}</td>
+                  <td className="contacts-table-actions" onClick={(e) => e.stopPropagation()}>
+                    <button className="btn-icon-sm">
+                      <MoreVertical className="w-4 h-4" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
         {filteredContacts.length === 0 && (
