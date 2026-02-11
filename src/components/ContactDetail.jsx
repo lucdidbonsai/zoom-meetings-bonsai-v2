@@ -67,9 +67,9 @@ const ContactDetail = ({ contact, onBack }) => {
     .filter(a => a.type === 'note_added')
     .sort(sortDescending);
 
-  // Meetings: meeting_scheduled + meeting_ended, descending chronological (includes upcoming)
+  // Meetings: meeting_ended only (past completed meetings, no scheduled)
   const meetingActivities = allActivities
-    .filter(a => a.type === 'meeting_scheduled' || a.type === 'meeting_ended')
+    .filter(a => a.type === 'meeting_ended')
     .sort(sortDescending);
 
   const tabs = [
@@ -435,9 +435,6 @@ const renderActivityBody = (activity) => {
                 {activity.duration && activity.attendees ? ' · ' : ''}
                 {activity.attendees ? `${activity.attendees} participants` : ''}
               </p>
-              {activity.hasTranscript && (
-                <a href="#" className="activity-widget-meeting-link" onClick={(e) => e.preventDefault()}>Transcript</a>
-              )}
             </div>
             <div className="activity-widget-meeting-pills">
               {activity.hasRecording && (

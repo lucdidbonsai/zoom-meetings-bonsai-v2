@@ -506,7 +506,6 @@ body {
 .tabs {
   display: flex;
   gap: 32px;
-  border-bottom: 1px solid var(--border-content);
   margin: 0 -32px;
   padding: 0 32px;
 }
@@ -564,7 +563,7 @@ body {
 }
 
 .activity-section .section-title {
-  margin-bottom: 8px;
+  margin-bottom: 30px;
 }
 
 /* Notes tab - Add Note button */
@@ -582,7 +581,7 @@ body {
   border: 1px solid var(--border-content);
   border-radius: var(--radius-md);
   cursor: pointer;
-  margin-bottom: 16px;
+  margin-bottom: 30px;
   transition: border-color var(--transition-fast), background-color var(--transition-fast);
 }
 
@@ -598,7 +597,7 @@ body {
 
 /* Note composer (replaces Add Note button when open) */
 .note-composer {
-  margin-bottom: 16px;
+  margin-bottom: 30px;
   border: 1px solid var(--border-content);
   border-radius: var(--radius-md);
   background-color: var(--bg-content);
