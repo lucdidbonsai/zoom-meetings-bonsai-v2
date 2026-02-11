@@ -21,18 +21,9 @@ function App() {
     contact.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (selectedContact) {
-    return (
-      <ContactDetail
-        contact={selectedContact}
-        onBack={() => setSelectedContact(null)}
-      />
-    );
-  }
-
   return (
     <div className="app">
-      {/* Sidebar */}
+      {/* Sidebar - always visible */}
       <div className="sidebar">
         <div className="sidebar-header">
           <h1 className="sidebar-title">Bonsai</h1>
@@ -48,7 +39,14 @@ function App() {
       </div>
 
       {/* Main Content */}
-      <div className="main-content">
+      <div className={`main-content ${selectedContact ? 'main-content--detail' : ''}`}>
+        {selectedContact ? (
+          <ContactDetail
+            contact={selectedContact}
+            onBack={() => setSelectedContact(null)}
+          />
+        ) : (
+          <>
         {/* Header */}
         <div className="page-header">
           <div>
@@ -142,6 +140,8 @@ function App() {
           <div className="empty-state">
             <p>No contacts found matching "{searchQuery}"</p>
           </div>
+        )}
+          </>
         )}
       </div>
     </div>

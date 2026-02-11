@@ -121,6 +121,14 @@ body {
   padding: 30px 40px;
 }
 
+.main-content.main-content--detail {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  min-height: 0;
+}
+
 /* Page Header */
 .page-header {
   display: flex;
@@ -484,6 +492,13 @@ body {
   height: 100vh;
   background-color: var(--bg-page);
   overflow: hidden;
+}
+
+/* When inside main-content (sidebar visible), fill available space */
+.main-content--detail .contact-detail {
+  height: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .detail-header {
