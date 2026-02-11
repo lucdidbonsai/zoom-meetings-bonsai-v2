@@ -1,6 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { getActivitiesForContact, eventTypeConfig } from '../data/activities';
-import { getIconComponent, Plus, MoreHorizontal, Calendar, Mail, Phone, FileText, Play, Video, Users, Clock } from './Icons';
+import { getIconComponent, Plus, MoreHorizontal, Calendar, Mail, Phone, FileText, Video, DealsIcon } from './Icons';
+
+// Truncatable Note Component
+const TruncatableNote = ({ content }) => {
+  const [expanded, setExpanded] = useState(false);
+  const [needsTruncation, setNeedsTruncation] = useState(false);
+  const textRef = useRef(null);
+
+  useEffect(() => {
+    const el = textRef.current;
+    if (el) {
+      setNeedsTruncation(el.scrollHeight > el.clientHeight + 1);
+    }
+  }, []);
+
+  return (
+    <div className="activity-note">
+      <p ref={textRef} className={expanded ? '' : 'note-truncated'}>{content}</p>
+      {needsTruncation && (
+        <button className="show-more-link" onClick={() => setExpanded(!expanded)}>
+          {expanded ? 'Show Less' : 'Show More'}
+        </button>
+      )}
+    </div>
+  );
+};
 
 const ContactDetail = ({ contact, onBack }) => {
   const [activeTab, setActiveTab] = useState('activity');
@@ -113,6 +138,7 @@ const ContactDetail = ({ contact, onBack }) => {
                       activity={activity}
                       isLast={index === pastActivities.length - 1}
                       contactName={contact.name}
+                      contactEmail={contact.email}
                     />
                   ))}
                 </div>
@@ -212,7 +238,7 @@ const UpcomingMeetingCard = ({ activity }) => (
 );
 
 // Activity Timeline Item
-const ActivityItem = ({ activity, isLast, contactName }) => {
+const ActivityItem = ({ activity, isLast, contactName, contactEmail }) => {
   const config = eventTypeConfig[activity.type];
   const IconComponent = getIconComponent(config.icon);
   const isSystemEvent = activity.type === 'meeting_ended' || activity.type === 'contact_created';
@@ -229,7 +255,7 @@ const ActivityItem = ({ activity, isLast, contactName }) => {
       )}
       <div className="activity-content">
         <div className="activity-header">
-          <span className="activity-title">{renderActivityTitle(activity, contactName)}</span>
+          <span className="activity-title">{renderActivityTitle(activity, contactName, contactEmail)}</span>
           <span className="activity-date">
             {activity.date}, {activity.time}
           </span>
@@ -241,7 +267,7 @@ const ActivityItem = ({ activity, isLast, contactName }) => {
 };
 
 // Helper function to render activity title
-const renderActivityTitle = (activity, contactName) => {
+const renderActivityTitle = (activity, contactName, contactEmail) => {
   const actor = activity.actor;
   switch (activity.type) {
     case 'meeting_scheduled':
@@ -251,15 +277,17 @@ const renderActivityTitle = (activity, contactName) => {
     case 'note_added':
       return <>{actor} added a note</>;
     case 'proposal_sent':
-      return <>{actor} sent proposal <strong>{activity.documentTitle}</strong></>;
+      return <>{actor} sent the <span className="activity-entity-link">proposal</span> to {contactEmail}</>;
     case 'proposal_accepted':
       return <>{actor} accepted proposal <strong>{activity.documentTitle}</strong></>;
     case 'contract_sent':
-      return <>{actor} sent contract <strong>{activity.documentTitle}</strong></>;
+      return <>{actor} sent the <span className="activity-entity-link">contract</span> to {contactEmail}</>;
+    case 'contract_viewed':
+      return <>{contactName} has viewed <span className="activity-entity-link">contract</span> for the first time.</>;
     case 'contract_signed':
       return <>{actor} signed contract <strong>{activity.documentTitle}</strong></>;
     case 'invoice_sent':
-      return <>{actor} sent invoice <strong>{activity.invoiceNumber}</strong></>;
+      return <>{actor} sent <span className="activity-entity-link">invoice {activity.invoiceNumber}</span> to {contactEmail}</>;
     case 'invoice_paid':
       return <>{actor} paid invoice <strong>{activity.invoiceNumber}</strong></>;
     case 'deal_assigned':
@@ -270,9 +298,9 @@ const renderActivityTitle = (activity, contactName) => {
     case 'project_email_received':
       return <>{actor} sent an email</>;
     case 'contact_property_updated':
-      return <>{actor} updated {activity.field}: "{activity.oldValue}" → "{activity.newValue}"</>;
+      return <>{actor} updated {activity.field}: &quot;{activity.oldValue}&quot; → &quot;{activity.newValue}&quot;</>;
     case 'contact_created':
-      return <>Contact created by {activity.createdBy === 'manual' ? actor : `system`}</>;
+      return <>Contact created by {activity.createdBy === 'manual' ? actor : 'system'}</>;
     default:
       return <>Activity</>;
   }
@@ -283,6 +311,7 @@ const renderActivityBody = (activity) => {
   switch (activity.type) {
     case 'meeting_scheduled':
       return null;
+
     case 'meeting_ended':
       return (
         <div className="meeting-preview">
@@ -320,18 +349,12 @@ const renderActivityBody = (activity) => {
       );
 
     case 'note_added':
-      return (
-        <div className="activity-note">
-          <p>{activity.content}</p>
-        </div>
-      );
+      return <TruncatableNote content={activity.content} />;
 
     case 'client_portal_message':
       return (
         <>
-          <div className="activity-note">
-            <p>{activity.content}</p>
-          </div>
+          <TruncatableNote content={activity.content} />
           <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Message</a>
         </>
       );
@@ -340,33 +363,22 @@ const renderActivityBody = (activity) => {
     case 'contract_sent':
       return (
         <>
-          <div className="document-preview">
-            <FileText className="w-4 h-4" />
-            <div>
-              <p className="document-title">{activity.documentTitle}</p>
-              {activity.amount && <p className="document-amount">{activity.amount}</p>}
-            </div>
+          <div className="document-chip">
+            <FileText className="document-chip-icon" />
+            <span>{activity.documentTitle}</span>
           </div>
           {activity.sentVia !== 'url' && (
             <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Email</a>
           )}
         </>
       );
-
-    case 'proposal_accepted':
-    case 'contract_signed':
-      return null;
 
     case 'invoice_sent':
       return (
         <>
-          <div className="document-preview">
-            <FileText className="w-4 h-4" />
-            <div>
-              <p className="document-title">Invoice {activity.invoiceNumber}</p>
-              <p className="document-amount">{activity.amount}</p>
-              {activity.dueDate && <p className="document-meta">Due: {activity.dueDate}</p>}
-            </div>
+          <div className="document-chip">
+            <FileText className="document-chip-icon" />
+            <span>Invoice {activity.invoiceNumber}</span>
           </div>
           {activity.sentVia !== 'url' && (
             <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Email</a>
@@ -374,19 +386,21 @@ const renderActivityBody = (activity) => {
         </>
       );
 
-    case 'invoice_paid':
-      return null;
-
     case 'deal_assigned':
       return (
-        <div className="document-preview">
-          <div>
-            <p className="document-title">{activity.dealName}</p>
-            <p className="document-amount">{activity.dealValue}</p>
-            <p className="document-meta">Stage: {activity.stage}</p>
-          </div>
+        <div className="document-chip">
+          <DealsIcon className="document-chip-icon" />
+          <span>{activity.dealName}</span>
         </div>
       );
+
+    case 'proposal_accepted':
+    case 'contract_signed':
+    case 'contract_viewed':
+    case 'invoice_paid':
+    case 'contact_property_updated':
+    case 'contact_created':
+      return null;
 
     case 'project_email_sent':
     case 'project_email_received':
@@ -399,10 +413,6 @@ const renderActivityBody = (activity) => {
           <a href="#" className="activity-action-link" onClick={(e) => e.preventDefault()}>View Email</a>
         </>
       );
-
-    case 'contact_property_updated':
-    case 'contact_created':
-      return null;
 
     default:
       return null;

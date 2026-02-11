@@ -796,10 +796,52 @@ body {
   opacity: 0.85;
 }
 
-.document-meta {
-  font-size: 12px;
+.activity-entity-link {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.document-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid var(--border-content);
+  border-radius: 20px;
+  background: var(--bg-content);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-default);
+  margin-top: 4px;
+}
+
+.document-chip-icon {
+  width: 16px;
+  height: 16px;
+  color: #22ad01;
+  flex-shrink: 0;
+}
+
+.note-truncated {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.show-more-link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 6px;
+  font-size: 13px;
   color: var(--text-muted);
-  margin-top: 2px;
+  cursor: pointer;
+  display: block;
+}
+
+.show-more-link:hover {
+  text-decoration: underline;
 }
 
 .meeting-preview {

@@ -151,6 +151,16 @@ const allActivities = {
       dueDate: 'Jan 14, 2026'
     },
     {
+      id: 'act-1-cv',
+      type: 'contract_viewed',
+      date: 'Dec 13, 2025',
+      time: '10:30 AM',
+      timestamp: '2025-12-13T10:30:00',
+      actor: 'Michael Fawler',
+      actorInitials: 'MF',
+      documentTitle: 'Marketing Services Agreement'
+    },
+    {
       id: 'act-13',
       type: 'contract_sent',
       date: 'Dec 12, 2025',
@@ -343,6 +353,16 @@ const allActivities = {
       dueDate: 'Jan 11, 2026'
     },
     {
+      id: 'act-2-cv',
+      type: 'contract_viewed',
+      date: 'Dec 9, 2025',
+      time: '9:15 AM',
+      timestamp: '2025-12-09T09:15:00',
+      actor: 'Sarah Chen',
+      actorInitials: 'SC',
+      documentTitle: 'Product Consulting Services Agreement'
+    },
+    {
       id: 'act-2-13',
       type: 'contract_sent',
       date: 'Dec 8, 2025',
@@ -533,6 +553,16 @@ const allActivities = {
       amount: '$6,800.00',
       invoiceNumber: 'INV-2025-095',
       dueDate: 'Jan 12, 2026'
+    },
+    {
+      id: 'act-3-cv',
+      type: 'contract_viewed',
+      date: 'Dec 10, 2025',
+      time: '2:00 PM',
+      timestamp: '2025-12-10T14:00:00',
+      actor: 'David Rodriguez',
+      actorInitials: 'DR',
+      documentTitle: 'Creative Services Agreement'
     },
     {
       id: 'act-3-13',
@@ -728,6 +758,16 @@ const allActivities = {
       dueDate: 'Jan 10, 2026'
     },
     {
+      id: 'act-4-cv',
+      type: 'contract_viewed',
+      date: 'Dec 8, 2025',
+      time: '11:20 AM',
+      timestamp: '2025-12-08T11:20:00',
+      actor: 'Emily Watson',
+      actorInitials: 'EW',
+      documentTitle: 'Marketing Consulting Agreement'
+    },
+    {
       id: 'act-4-13',
       type: 'contract_sent',
       date: 'Dec 7, 2025',
@@ -919,6 +959,16 @@ const allActivities = {
       amount: '$18,000.00',
       invoiceNumber: 'INV-2025-110',
       dueDate: 'Jan 13, 2026'
+    },
+    {
+      id: 'act-5-cv',
+      type: 'contract_viewed',
+      date: 'Dec 11, 2025',
+      time: '3:45 PM',
+      timestamp: '2025-12-11T15:45:00',
+      actor: 'James Mitchell',
+      actorInitials: 'JM',
+      documentTitle: 'Technical Services Agreement'
     },
     {
       id: 'act-5-13',
@@ -1114,6 +1164,16 @@ const allActivities = {
       dueDate: 'Jan 9, 2026'
     },
     {
+      id: 'act-6-cv',
+      type: 'contract_viewed',
+      date: 'Dec 7, 2025',
+      time: '10:00 AM',
+      timestamp: '2025-12-07T10:00:00',
+      actor: 'Amanda Foster',
+      actorInitials: 'AF',
+      documentTitle: 'Design Consulting Agreement'
+    },
+    {
       id: 'act-6-13',
       type: 'contract_sent',
       date: 'Dec 6, 2025',
@@ -1306,6 +1366,16 @@ const allActivities = {
       dueDate: 'Jan 13, 2026'
     },
     {
+      id: 'act-7-cv',
+      type: 'contract_viewed',
+      date: 'Dec 12, 2025',
+      time: '8:30 AM',
+      timestamp: '2025-12-12T08:30:00',
+      actor: 'Robert Kim',
+      actorInitials: 'RK',
+      documentTitle: 'Sales Consulting Agreement'
+    },
+    {
       id: 'act-7-13',
       type: 'contract_sent',
       date: 'Dec 11, 2025',
@@ -1496,6 +1566,16 @@ const allActivities = {
       amount: '$7,300.00',
       invoiceNumber: 'INV-2025-132',
       dueDate: 'Jan 12, 2026'
+    },
+    {
+      id: 'act-8-cv',
+      type: 'contract_viewed',
+      date: 'Dec 10, 2025',
+      time: '9:00 AM',
+      timestamp: '2025-12-10T09:00:00',
+      actor: 'Jessica Martinez',
+      actorInitials: 'JM',
+      documentTitle: 'Operations Consulting Agreement'
     },
     {
       id: 'act-8-13',
@@ -1691,6 +1771,16 @@ const allActivities = {
       dueDate: 'Jan 15, 2026'
     },
     {
+      id: 'act-9-cv',
+      type: 'contract_viewed',
+      date: 'Dec 13, 2025',
+      time: '11:00 AM',
+      timestamp: '2025-12-13T11:00:00',
+      actor: 'Christopher Lee',
+      actorInitials: 'CL',
+      documentTitle: 'Strategic Advisory Agreement'
+    },
+    {
       id: 'act-9-13',
       type: 'contract_sent',
       date: 'Dec 12, 2025',
@@ -1882,6 +1972,16 @@ const allActivities = {
       amount: '$4,800.00',
       invoiceNumber: 'INV-2025-148',
       dueDate: 'Jan 10, 2026'
+    },
+    {
+      id: 'act-10-cv',
+      type: 'contract_viewed',
+      date: 'Dec 8, 2025',
+      time: '10:15 AM',
+      timestamp: '2025-12-08T10:15:00',
+      actor: 'Laura Albany',
+      actorInitials: 'LA',
+      documentTitle: 'Partnership Agreement'
     },
     {
       id: 'act-10-13',
@@ -2077,6 +2177,16 @@ const allActivities = {
       sentVia: 'url'
     },
     {
+      id: 'act-11-cv',
+      type: 'contract_viewed',
+      date: 'Dec 12, 2025',
+      time: '2:00 PM',
+      timestamp: '2025-12-12T14:00:00',
+      actor: 'Daniel Thompson',
+      actorInitials: 'DT',
+      documentTitle: 'Financial Consulting Agreement'
+    },
+    {
       id: 'act-11-13',
       type: 'contract_sent',
       date: 'Dec 11, 2025',
@@ -2269,6 +2379,16 @@ const allActivities = {
       dueDate: 'Jan 9, 2026'
     },
     {
+      id: 'act-12-cv',
+      type: 'contract_viewed',
+      date: 'Dec 7, 2025',
+      time: '4:30 PM',
+      timestamp: '2025-12-07T16:30:00',
+      actor: 'Olivia Parker',
+      actorInitials: 'OP',
+      documentTitle: 'Content Consulting Agreement'
+    },
+    {
       id: 'act-12-13',
       type: 'contract_sent',
       date: 'Dec 6, 2025',
@@ -2332,7 +2452,7 @@ export const eventTypeConfig = {
     label: 'Meeting Ended'
   },
   note_added: {
-    icon: 'file-text',
+    icon: 'edit',
     color: '#8c8b7d',
     label: 'Note Added'
   },
@@ -2355,6 +2475,11 @@ export const eventTypeConfig = {
     icon: 'check-circle',
     color: '#22ad01',
     label: 'Contract Signed'
+  },
+  contract_viewed: {
+    icon: 'file-text',
+    color: '#520eb0',
+    label: 'Contract Viewed'
   },
   invoice_sent: {
     icon: 'dollar-sign',

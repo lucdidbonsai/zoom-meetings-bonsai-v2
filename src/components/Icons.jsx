@@ -109,6 +109,14 @@ export const Phone = ({ className = "w-4 h-4", ...props }) => (
   </svg>
 );
 
+export const DealsIcon = ({ className = "w-4 h-4", ...props }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" {...props}>
+    <path d="M5 5a9.9 9.9 0 0 1 0 14" />
+    <path d="M9 8a5.7 5.7 0 0 1 0 8" />
+    <path d="M13 10.5a2.1 2.1 0 0 1 0 3" />
+  </svg>
+);
+
 // Icon mapper for activity types
 export const getIconComponent = (iconName) => {
   const icons = {
@@ -123,7 +131,8 @@ export const getIconComponent = (iconName) => {
     'edit': Edit,
     'user-plus': UserPlus,
     'users': Users,
-    'clock': Clock
+    'clock': Clock,
+    'deals': DealsIcon
   };
   return icons[iconName] || FileText;
 };
