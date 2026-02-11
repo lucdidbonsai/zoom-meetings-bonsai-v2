@@ -62,55 +62,210 @@ body {
   overflow: hidden;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 240px;
-  background-color: var(--bg-content);
-  border-right: 1px solid var(--border-content);
-  padding: 20px;
-}
-
-.sidebar-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--brand-primary);
-  margin-bottom: 30px;
-}
-
-.sidebar-nav {
+/* Two-tier Left Sidebar - Primary (narrow, dark) */
+.left-sidebar {
+  width: 56px;
+  background-color: #1f2937;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.left-sidebar-logo {
+  width: 36px;
+  height: 36px;
+  background-color: var(--brand-primary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.left-sidebar-logo-text {
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.left-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.left-sidebar-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  color: #9ca3af;
+}
+
+.left-sidebar-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #e5e7eb;
+}
+
+.left-sidebar-btn-active {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #f9fafb;
+}
+
+.left-sidebar-btn-blue {
+  background-color: #2563eb;
+  color: white;
+  margin-top: 8px;
+}
+
+.left-sidebar-btn-blue:hover {
+  background-color: #1d4ed8;
+  color: white;
+}
+
+.left-sidebar-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.left-sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 4px;
 }
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  padding: 10px 12px;
+.left-sidebar-menu-wrap {
+  position: relative;
+}
+
+.left-sidebar-dropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 8px;
+  width: 224px;
+  background: var(--bg-content);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-medium);
+  border: 1px solid var(--border-content);
+  padding: 8px 0;
+  z-index: 100;
+}
+
+.left-sidebar-dropdown-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-content);
+}
+
+.left-sidebar-dropdown-title {
   font-size: 14px;
   font-weight: 500;
+  color: var(--text-default);
+}
+
+.left-sidebar-dropdown-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.left-sidebar-dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 14px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-default);
+  transition: background-color var(--transition-fast);
+}
+
+.left-sidebar-dropdown-item:hover {
+  background-color: var(--bg-hover-subtle);
+}
+
+.left-sidebar-dropdown-divider {
+  height: 1px;
+  background-color: var(--border-content);
+  margin: 4px 0;
+}
+
+/* Two-tier Left Sidebar - Client Management (secondary, white) */
+.client-management-sidebar {
+  width: 192px;
+  background-color: var(--bg-content);
+  border-right: 1px solid var(--border-content);
+  display: flex;
+  flex-direction: column;
+}
+
+.client-management-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-content);
+}
+
+.client-management-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-default);
+}
+
+.client-management-nav {
+  flex: 1;
+  padding: 8px;
+  overflow-y: auto;
+}
+
+.client-management-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
   color: var(--text-muted);
   text-decoration: none;
   border-radius: var(--radius-md);
   transition: background-color var(--transition-fast), color var(--transition-fast);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  font-family: inherit;
 }
 
-.nav-item:hover {
+.client-management-nav-item:hover {
   background-color: var(--bg-hover-subtle);
   color: var(--text-default);
 }
 
-.nav-item.active {
-  background-color: #e8f5e9;
-  color: var(--brand-primary);
-  font-weight: 600;
+.client-management-nav-item--active {
+  background-color: #1f2937;
+  color: white;
+  font-weight: 500;
 }
 
-.nav-item-icon {
-  width: 18px;
-  height: 18px;
+.client-management-nav-item--active:hover {
+  background-color: #374151;
+  color: white;
+}
+
+.client-management-nav-icon {
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
-  margin-right: 8px;
   color: inherit;
 }
 

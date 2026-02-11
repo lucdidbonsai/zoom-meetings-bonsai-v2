@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { contacts } from './data/contacts';
 import ContactDetail from './components/ContactDetail';
-import { Search, ChevronRight, InvoiceIcon, ContractIcon, ProposalIcon, Filter, MoreVertical } from './components/Icons';
+import { LeftSidebar, ClientManagementSidebar } from './components/Sidebar';
+import { Search, Filter, MoreVertical } from './components/Icons';
 import './App.css';
 
 const formatBirthday = (str) => {
@@ -23,20 +24,9 @@ function App() {
 
   return (
     <div className="app">
-      {/* Sidebar - always visible */}
-      <div className="sidebar">
-        <div className="sidebar-header">
-          <h1 className="sidebar-title">Bonsai</h1>
-          <div className="sidebar-nav">
-            <a href="#" className="nav-item">Dashboard</a>
-            <a href="#" className="nav-item">Projects</a>
-            <a href="#" className="nav-item active">Contacts</a>
-            <a href="#" className="nav-item"><ProposalIcon className="nav-item-icon" /> Proposals</a>
-            <a href="#" className="nav-item"><ContractIcon className="nav-item-icon" /> Contracts</a>
-            <a href="#" className="nav-item"><InvoiceIcon className="nav-item-icon" /> Invoices</a>
-          </div>
-        </div>
-      </div>
+      {/* Two-tier left nav - always visible */}
+      <LeftSidebar />
+      <ClientManagementSidebar activeSection="contacts" />
 
       {/* Main Content */}
       <div className={`main-content ${selectedContact ? 'main-content--detail' : ''}`}>
