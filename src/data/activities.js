@@ -38,7 +38,7 @@ const allActivities = {
       timestamp: new Date().toISOString().split('T')[0] + 'T08:15:19',
       actor: 'Lucas Did',
       actorInitials: 'LD',
-      content: 'This is a very lengthy note. This is a very lengthy note. This is a very lengthy note. This is a very lengthy note. This is a very lengthy note. This is a very lengthy note. This is a very lengthy note. This is a very',
+      content: 'Michael confirmed budget approval for Q1 marketing strategy. Moving forward with the $85K proposal. He mentioned the legal team will need until next week to review the contract terms. I\'ll schedule a follow-up call to align on timeline.',
       pinned: false
     },
     {
@@ -190,8 +190,8 @@ const allActivities = {
       timestamp: new Date().toISOString().split('T')[0] + 'T08:15:19',
       actor: 'Lucas Did',
       actorInitials: 'LD',
-      subject: 'This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. ',
-      preview: 'This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very',
+      subject: 'Q1 Campaign Timeline & Milestones - Updated',
+      preview: 'Hi Michael, attached is the detailed timeline for the Q1 campaign rollout. I\'ve incorporated the feedback from last week\'s sync and pushed the creative review milestone to Jan 28. Please review the revised schedule and let me know if we need to align with any other stakeholders before we lock it in.',
       recipientEmail: 'lucas.didier+testclienportal@gmail.com'
     },
     {

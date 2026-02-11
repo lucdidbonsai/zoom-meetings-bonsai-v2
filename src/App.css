@@ -665,13 +665,7 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 0;
-  /* 5px so vertical line ends ~5px above next icon */
-  padding-bottom: 5px;
-}
-
-/* Events with widget: slightly more breathing room between content and next event */
-.activity-item:not(.activity-item-no-widget):not(.last) {
-  padding-bottom: 12px;
+  padding-bottom: 15px;
 }
 
 .activity-item.last {
@@ -718,10 +712,10 @@ body {
 .activity-timeline-line {
   width: 1px;
   flex: 1;
-  min-height: 1px;
+  min-height: 15px;
   margin-top: 4px;
   margin-bottom: 0;
-  background-color: #d1d1d1;
+  background-color: #c4c4c4;
 }
 
 .activity-item.last .activity-timeline-line {
