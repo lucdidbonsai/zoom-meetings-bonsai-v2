@@ -553,7 +553,7 @@ body {
 /* Activity Feed */
 .activity-feed {
   flex: 1;
-  padding: 24px 32px;
+  padding: 12px 32px 24px;
   overflow-y: auto;
   background-color: var(--bg-content);
 }
@@ -561,6 +561,10 @@ body {
 .activity-section {
   margin-bottom: 0;
   min-height: 0;
+}
+
+.activity-section .section-title {
+  margin-bottom: 8px;
 }
 
 /* Notes tab - Add Note button */
@@ -574,7 +578,7 @@ body {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-default);
-  background-color: var(--bg-content);
+  background-color: var(--bg-panel);
   border: 1px solid var(--border-content);
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -592,90 +596,77 @@ body {
   height: 16px;
 }
 
-/* Notes list (screenshots 4-8 style) */
-.notes-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* Note composer (replaces Add Note button when open) */
+.note-composer {
+  margin-bottom: 16px;
+  border: 1px solid var(--border-content);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-content);
+  overflow: hidden;
 }
 
-.note-card {
+.note-composer-toolbar {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px 0;
+  gap: 2px;
+  padding: 8px 12px;
   border-bottom: 1px solid var(--border-content);
-}
-
-.note-card:last-child {
-  border-bottom: none;
-}
-
-.note-card-avatar {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  border-radius: 50%;
   background-color: var(--bg-panel);
+}
+
+.note-composer-btn {
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
   font-weight: 600;
-  color: var(--text-default);
-  overflow: hidden;
-}
-
-.note-card-avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.note-card-body {
-  flex: 1;
-  min-width: 0;
-}
-
-.note-card-meta {
-  font-size: 14px;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-
-.note-card-actions {
-  position: relative;
-  flex-shrink: 0;
-}
-
-.note-card-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 4px;
-  background: var(--bg-content);
-  border: 1px solid var(--border-content);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-medium);
-  padding: 4px 0;
-  z-index: 10;
-  min-width: 100px;
-}
-
-.note-card-menu button {
-  display: block;
-  width: 100%;
-  padding: 8px 16px;
-  text-align: left;
-  font-size: 14px;
   background: none;
   border: none;
+  border-radius: var(--radius-sm);
   cursor: pointer;
+  color: var(--text-muted);
+}
+
+.note-composer-btn:hover {
+  background-color: var(--bg-hover-subtle);
   color: var(--text-default);
 }
 
-.note-card-menu button:hover {
-  background-color: var(--bg-hover-subtle);
+.note-composer-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  border: none;
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+}
+
+.note-composer-input::placeholder {
+  color: var(--text-lightest);
+}
+
+.note-composer-actions {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-content);
+  background-color: var(--bg-panel);
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.btn-text:hover {
+  color: var(--text-default);
 }
 
 .section-header {
@@ -689,7 +680,6 @@ body {
   font-size: 18px;
   font-weight: 600;
   color: var(--text-default);
-  margin-bottom: 16px;
 }
 
 /* Upcoming Cards */

@@ -28,44 +28,33 @@ const TruncatableNote = ({ content }) => {
   );
 };
 
-// Note card for Notes tab (screenshots 4-8 style: avatar, author · date, content, ellipsis menu)
-const NoteCard = ({ activity }) => {
-  const { date, time } = activity.timestamp ? formatActivityDateTime(activity.timestamp) : { date: activity.date, time: activity.time };
-  const actorAvatar = contacts.find(c => c.name === activity.actor)?.avatar;
-  const [menuOpen, setMenuOpen] = useState(false);
-  const initials = activity.actorInitials || (activity.actor && activity.actor.split(' ').map(n => n[0]).join('')) || '?';
-  return (
-    <div className="note-card">
-      <div className="note-card-avatar">
-        {actorAvatar ? (
-          <img src={actorAvatar} alt={activity.actor} className="note-card-avatar-img" />
-        ) : (
-          initials
-        )}
-      </div>
-      <div className="note-card-body">
-        <p className="note-card-meta">{activity.actor} · {date}, {time}</p>
-        <TruncatableNote content={activity.content} />
-      </div>
-      <div className="note-card-actions">
-        <button className="btn-icon-sm" onClick={() => setMenuOpen(!menuOpen)} aria-label="More options">
-          <MoreHorizontal />
-        </button>
-        {menuOpen && (
-          <div className="note-card-menu">
-            <button onClick={(e) => { e.preventDefault(); setMenuOpen(false); }}>Edit</button>
-            <button onClick={(e) => { e.preventDefault(); setMenuOpen(false); }}>Delete</button>
-          </div>
-        )}
-      </div>
+// Note composer - shows when Add Note is clicked, hidden on Cancel
+const NoteComposer = ({ onCancel }) => (
+  <div className="note-composer">
+    <div className="note-composer-toolbar">
+      <button type="button" className="note-composer-btn" title="Bold">B</button>
+      <button type="button" className="note-composer-btn" title="Italic">I</button>
+      <button type="button" className="note-composer-btn" title="Underline">U</button>
+      <button type="button" className="note-composer-btn" title="Strikethrough">S</button>
+      <button type="button" className="note-composer-btn" title="Text color">A</button>
+      <button type="button" className="note-composer-btn" title="Link">⎓</button>
+      <button type="button" className="note-composer-btn" title="Bullet list">•</button>
+      <button type="button" className="note-composer-btn" title="Numbered list">1.</button>
+      <button type="button" className="note-composer-btn" title="Image">🖼</button>
     </div>
-  );
-};
+    <textarea className="note-composer-input" placeholder="Add a note to this contact..." rows={4} />
+    <div className="note-composer-actions">
+      <button type="button" className="btn-text" onClick={onCancel}>Cancel</button>
+      <button type="button" className="btn btn-primary">Add Note</button>
+    </div>
+  </div>
+);
 
 const sortDescending = (a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0);
 
 const ContactDetail = ({ contact, onBack }) => {
   const [activeTab, setActiveTab] = useState('all');
+  const [isComposerOpen, setIsComposerOpen] = useState(false);
   const allActivities = getActivitiesForContact(contact.id);
 
   // All Activity: past/history only, descending chronological
@@ -164,22 +153,33 @@ const ContactDetail = ({ contact, onBack }) => {
             </h2>
             {activeTab === 'notes' ? (
               <>
-                <button className="btn-add-note">
-                  <Plus />
-                  Add Note
-                </button>
+                {isComposerOpen ? (
+                  <NoteComposer onCancel={() => setIsComposerOpen(false)} />
+                ) : (
+                  <button className="btn-add-note" onClick={() => setIsComposerOpen(true)}>
+                    <Plus />
+                    Add Note
+                  </button>
+                )}
                 {noteActivities.length > 0 ? (
-                  <div className="notes-list">
-                    {noteActivities.map((activity) => (
-                      <NoteCard key={activity.id} activity={activity} />
+                  <div className="activity-timeline">
+                    {noteActivities.map((activity, index) => (
+                      <ActivityItem
+                        key={activity.id}
+                        activity={activity}
+                        isLast={index === noteActivities.length - 1}
+                        contact={contact}
+                        contactName={contact.name}
+                        contactEmail={contact.email}
+                      />
                     ))}
                   </div>
-                ) : (
+                ) : !isComposerOpen ? (
                   <div className="empty-state">
                     <FileText className="w-12 h-12" style={{ color: '#8c8b7d' }} />
                     <p>No notes yet</p>
                   </div>
-                )}
+                ) : null}
               </>
             ) : displayedActivities.length > 0 ? (
               <div className="activity-timeline">

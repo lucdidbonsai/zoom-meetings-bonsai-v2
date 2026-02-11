@@ -42,6 +42,28 @@ const allActivities = {
       pinned: false
     },
     {
+      id: 'act-3b',
+      type: 'note_added',
+      date: 'Jan 18, 2026',
+      time: '2:30 PM',
+      timestamp: '2026-01-18T14:30:00',
+      actor: 'Laura Albany',
+      actorInitials: 'LA',
+      content: 'Follow-up with legal on contract review. They have a few amendments around the termination clause. Will send revised version by EOD Thursday.',
+      pinned: false
+    },
+    {
+      id: 'act-3c',
+      type: 'note_added',
+      date: 'Jan 14, 2026',
+      time: '10:00 AM',
+      timestamp: '2026-01-14T10:00:00',
+      actor: 'Lucas Did',
+      actorInitials: 'LD',
+      content: 'Kickoff call went well. Michael wants to prioritize the brand refresh deliverables before the campaign launch. Agreed on bi-weekly syncs.',
+      pinned: false
+    },
+    {
       id: 'act-4',
       type: 'proposal_sent',
       date: 'Jan 15, 2026',
@@ -257,6 +279,26 @@ const allActivities = {
       content: 'Sarah mentioned they are expanding their product team by 30% in Q2. Big opportunity for consulting engagement around UX standards.'
     },
     {
+      id: 'act-2-3b',
+      type: 'note_added',
+      date: 'Jan 25, 2026',
+      time: '9:15 AM',
+      timestamp: '2026-01-25T09:15:00',
+      actor: 'Marcus Webb',
+      actorInitials: 'MW',
+      content: 'Product workshop scope confirmed. They want to include 3 breakout sessions focused on enterprise vs SMB feature gaps. Sending updated agenda.'
+    },
+    {
+      id: 'act-2-3c',
+      type: 'note_added',
+      date: 'Jan 21, 2026',
+      time: '4:00 PM',
+      timestamp: '2026-01-21T16:00:00',
+      actor: 'Sarah Chen',
+      actorInitials: 'SC',
+      content: 'Shared the UX audit framework with Sarah. She loved the heuristic evaluation approach and wants to extend it to their mobile app.'
+    },
+    {
       id: 'act-2-4',
       type: 'proposal_sent',
       date: 'Jan 22, 2026',
@@ -466,6 +508,26 @@ const allActivities = {
       actor: 'Laura Albany',
       actorInitials: 'LA',
       content: 'David shared that Netflix is expanding their content slate in Q2. Wants us to lead the brand identity refresh across all new verticals.'
+    },
+    {
+      id: 'act-3-3b',
+      type: 'note_added',
+      date: 'Jan 23, 2026',
+      time: '11:00 AM',
+      timestamp: '2026-01-23T11:00:00',
+      actor: 'Laura Albany',
+      actorInitials: 'LA',
+      content: 'Storyboard review pushed to next week. David\'s team is still finalizing the narrative arc for the hero campaign. Sent over mood references.'
+    },
+    {
+      id: 'act-3-3c',
+      type: 'note_added',
+      date: 'Jan 19, 2026',
+      time: '3:30 PM',
+      timestamp: '2026-01-19T15:30:00',
+      actor: 'David Rodriguez',
+      actorInitials: 'DR',
+      content: 'Creative direction call went well. He\'s leaning toward bold, editorial-style imagery for the launch. Wants to see 2-3 concept directions.'
     },
     {
       id: 'act-3-4',
@@ -680,6 +742,26 @@ const allActivities = {
       content: 'Emily confirmed they\'re launching in 3 new European markets in Q2. Wants us to build a localized growth playbook for each region.'
     },
     {
+      id: 'act-4-3b',
+      type: 'note_added',
+      date: 'Jan 24, 2026',
+      time: '10:00 AM',
+      timestamp: '2026-01-24T10:00:00',
+      actor: 'Priya Sharma',
+      actorInitials: 'PS',
+      content: 'Attribution model proposal sent. Emily\'s analytics team will review. She wants to prioritize multi-touch over last-click before we finalize.'
+    },
+    {
+      id: 'act-4-3c',
+      type: 'note_added',
+      date: 'Jan 20, 2026',
+      time: '2:15 PM',
+      timestamp: '2026-01-20T14:15:00',
+      actor: 'Emily Chen',
+      actorInitials: 'EC',
+      content: 'Shared our GA4 migration checklist with their team. They\'re 2 weeks behind schedule—recommended we scope Phase 1 tighter to hit their launch date.'
+    },
+    {
       id: 'act-4-4',
       type: 'proposal_sent',
       date: 'Jan 21, 2026',
@@ -889,6 +971,26 @@ const allActivities = {
       actor: 'Tom Bradley',
       actorInitials: 'TB',
       content: 'James confirmed the platform migration timeline has been moved up to Q2. They need our architecture review completed by end of March at the latest.'
+    },
+    {
+      id: 'act-5-3b',
+      type: 'note_added',
+      date: 'Jan 26, 2026',
+      time: '9:30 AM',
+      timestamp: '2026-01-26T09:30:00',
+      actor: 'Tom Bradley',
+      actorInitials: 'TB',
+      content: 'API spec v2 feedback session scheduled for Friday. James wants to discuss OAuth 2.1 vs API keys for partner endpoints before we lock the docs.'
+    },
+    {
+      id: 'act-5-3c',
+      type: 'note_added',
+      date: 'Jan 22, 2026',
+      time: '3:45 PM',
+      timestamp: '2026-01-22T15:45:00',
+      actor: 'James Wu',
+      actorInitials: 'JW',
+      content: 'Architecture diagrams uploaded to Confluence. Their CTO will review. Flagged the webhook retry logic as an area we should simplify.'
     },
     {
       id: 'act-5-4',
@@ -1104,6 +1206,26 @@ const allActivities = {
       content: 'Amanda wants to involve their entire design team (12 people) in the audit workshops. Need to plan for larger sessions and breakout groups.'
     },
     {
+      id: 'act-6-3b',
+      type: 'note_added',
+      date: 'Jan 22, 2026',
+      time: '11:00 AM',
+      timestamp: '2026-01-22T11:00:00',
+      actor: 'Laura Albany',
+      actorInitials: 'LA',
+      content: 'Component inventory spreadsheet sent. Amanda added comments on deprecated components. We should prioritize the design tokens and typography audit first.'
+    },
+    {
+      id: 'act-6-3c',
+      type: 'note_added',
+      date: 'Jan 18, 2026',
+      time: '4:30 PM',
+      timestamp: '2026-01-18T16:30:00',
+      actor: 'Amanda Foster',
+      actorInitials: 'AF',
+      content: 'Granted Figma access. Their design systems project has 8 component libraries. Scheduling a walkthrough for next week.'
+    },
+    {
       id: 'act-6-4',
       type: 'proposal_sent',
       date: 'Jan 19, 2026',
@@ -1313,6 +1435,26 @@ const allActivities = {
       actor: 'Marcus Webb',
       actorInitials: 'MW',
       content: 'Robert shared that their sales team is restructuring in Q2 — moving from territory-based to industry-vertical selling. Huge opportunity for us to help with the transition playbook.'
+    },
+    {
+      id: 'act-7-3b',
+      type: 'note_added',
+      date: 'Jan 27, 2026',
+      time: '10:30 AM',
+      timestamp: '2026-01-27T10:30:00',
+      actor: 'Marcus Webb',
+      actorInitials: 'MW',
+      content: 'Sales playbook V2 review with Robert. He loved the objection handling section. Asked for a competitive battle card addendum—sending draft by EOD.'
+    },
+    {
+      id: 'act-7-3c',
+      type: 'note_added',
+      date: 'Jan 23, 2026',
+      time: '2:00 PM',
+      timestamp: '2026-01-23T14:00:00',
+      actor: 'Robert Kim',
+      actorInitials: 'RK',
+      content: 'Pipeline and win rate data shared. Their Q4 numbers are strong. Need to incorporate the new territory structure into the playbook framework.'
     },
     {
       id: 'act-7-4',
@@ -1526,6 +1668,26 @@ const allActivities = {
       content: 'Jessica flagged that they\'re hiring 15 new ops team members in Q2. Critical to get the SOPs and workflow templates finalized before the onboarding wave.'
     },
     {
+      id: 'act-8-3b',
+      type: 'note_added',
+      date: 'Jan 28, 2026',
+      time: '9:00 AM',
+      timestamp: '2026-01-28T09:00:00',
+      actor: 'Priya Sharma',
+      actorInitials: 'PS',
+      content: 'Workflow templates batch 1 reviewed. Jessica needs approval chain updates—they changed sign-off process for purchases over $5K. Revising and resending.'
+    },
+    {
+      id: 'act-8-3c',
+      type: 'note_added',
+      date: 'Jan 24, 2026',
+      time: '3:15 PM',
+      timestamp: '2026-01-24T15:15:00',
+      actor: 'Jessica Moore',
+      actorInitials: 'JM',
+      content: 'SOPs and RACI matrix shared. Their org chart is in the folder too. Audit kickoff pushed to Feb 5 to align with their quarterly planning.'
+    },
+    {
       id: 'act-8-4',
       type: 'proposal_sent',
       date: 'Jan 25, 2026',
@@ -1735,6 +1897,26 @@ const allActivities = {
       actor: 'Tom Bradley',
       actorInitials: 'TB',
       content: 'Chris shared confidentially that Notion is exploring a Series C fundraise in Q3. Wants us to complete the market positioning analysis before they start investor conversations.'
+    },
+    {
+      id: 'act-9-3b',
+      type: 'note_added',
+      date: 'Jan 27, 2026',
+      time: '2:45 PM',
+      timestamp: '2026-01-27T14:45:00',
+      actor: 'Tom Bradley',
+      actorInitials: 'TB',
+      content: 'Competitive landscape draft reviewed. Chris thinks our TAM estimates for enterprise are conservative—wants us to push 15-20% higher based on their internal data.'
+    },
+    {
+      id: 'act-9-3c',
+      type: 'note_added',
+      date: 'Jan 23, 2026',
+      time: '11:00 AM',
+      timestamp: '2026-01-23T11:00:00',
+      actor: 'Chris Taylor',
+      actorInitials: 'CT',
+      content: 'Board deck and strategic priorities shared under NDA. Market positioning analysis scope confirmed. Target completion: mid-February.'
     },
     {
       id: 'act-9-4',
@@ -1950,6 +2132,26 @@ const allActivities = {
       content: 'Laura mentioned Slack is rolling out Connect for enterprise partners in Q2. Wants us to be part of the pilot program and help design the partner onboarding experience.'
     },
     {
+      id: 'act-10-3b',
+      type: 'note_added',
+      date: 'Jan 25, 2026',
+      time: '10:15 AM',
+      timestamp: '2026-01-25T10:15:00',
+      actor: 'Marcus Webb',
+      actorInitials: 'MW',
+      content: 'Partner tier requirements doc sent. Laura aligned on Gold tier. Their technical team is reviewing API requirements. Follow-up in 1 week.'
+    },
+    {
+      id: 'act-10-3c',
+      type: 'note_added',
+      date: 'Jan 21, 2026',
+      time: '5:00 PM',
+      timestamp: '2026-01-21T17:00:00',
+      actor: 'Laura Benson',
+      actorInitials: 'LB',
+      content: 'Slack Connect docs and sandbox credentials added to project folder. Sandbox resets daily at midnight PST. Ready for integration testing.'
+    },
+    {
       id: 'act-10-4',
       type: 'proposal_sent',
       date: 'Jan 22, 2026',
@@ -2159,6 +2361,26 @@ const allActivities = {
       actor: 'Priya Sharma',
       actorInitials: 'PS',
       content: 'Daniel shared that Zoom is transitioning to a new fiscal year calendar starting April 1. Needs the financial model restructured to accommodate the 3-month bridge period.'
+    },
+    {
+      id: 'act-11-3b',
+      type: 'note_added',
+      date: 'Jan 26, 2026',
+      time: '3:30 PM',
+      timestamp: '2026-01-26T15:30:00',
+      actor: 'Priya Sharma',
+      actorInitials: 'PS',
+      content: 'Budget model feedback: add R&D capitalization line and update headcount in tab 3. Daniel sending updated assumptions by tomorrow.'
+    },
+    {
+      id: 'act-11-3c',
+      type: 'note_added',
+      date: 'Jan 22, 2026',
+      time: '9:45 AM',
+      timestamp: '2026-01-22T09:45:00',
+      actor: 'Daniel Park',
+      actorInitials: 'DP',
+      content: 'FY2026 draft model sent. Includes conservative, base, and aggressive scenario tabs. Chart of accounts in the shared folder for mapping.'
     },
     {
       id: 'act-11-4',
@@ -2371,6 +2593,26 @@ const allActivities = {
       actor: 'Laura Albany',
       actorInitials: 'LA',
       content: 'Olivia confirmed they\'re launching a branded podcast in Q2. Wants us to handle the content strategy, episode planning, and guest outreach framework.'
+    },
+    {
+      id: 'act-12-3b',
+      type: 'note_added',
+      date: 'Jan 24, 2026',
+      time: '4:00 PM',
+      timestamp: '2026-01-24T16:00:00',
+      actor: 'Laura Albany',
+      actorInitials: 'LA',
+      content: 'Brand voice guidelines draft sent. Olivia loves the tone spectrum—wants to tweak the playful end to stay witty but not sarcastic. Revisions by EOD.'
+    },
+    {
+      id: 'act-12-3c',
+      type: 'note_added',
+      date: 'Jan 20, 2026',
+      time: '1:30 PM',
+      timestamp: '2026-01-20T13:30:00',
+      actor: 'Olivia Hayes',
+      actorInitials: 'OH',
+      content: 'Content library and editorial calendar shared. Newsletter archive goes back 2 years—helpful for the voice audit. Podcast format discussion scheduled.'
     },
     {
       id: 'act-12-4',
