@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { getActivitiesForContact, eventTypeConfig, formatActivityDateTime } from '../data/activities';
 import { contacts } from '../data/contacts';
-import { getIconComponent, Plus, MoreHorizontal, Calendar, Mail, Phone, FileText, Video, DealsIcon, Play, Sparkle } from './Icons';
+import { getIconComponent, Plus, MoreHorizontal, Calendar, FileText, Video, DealsIcon, Play, Sparkle } from './Icons';
 
 // Truncatable Note Component
 const TruncatableNote = ({ content }) => {
@@ -24,6 +24,40 @@ const TruncatableNote = ({ content }) => {
           {expanded ? 'Show Less' : 'Show More'}
         </button>
       )}
+    </div>
+  );
+};
+
+// Note card for Notes tab (screenshots 4-8 style: avatar, author · date, content, ellipsis menu)
+const NoteCard = ({ activity }) => {
+  const { date, time } = activity.timestamp ? formatActivityDateTime(activity.timestamp) : { date: activity.date, time: activity.time };
+  const actorAvatar = contacts.find(c => c.name === activity.actor)?.avatar;
+  const [menuOpen, setMenuOpen] = useState(false);
+  const initials = activity.actorInitials || (activity.actor && activity.actor.split(' ').map(n => n[0]).join('')) || '?';
+  return (
+    <div className="note-card">
+      <div className="note-card-avatar">
+        {actorAvatar ? (
+          <img src={actorAvatar} alt={activity.actor} className="note-card-avatar-img" />
+        ) : (
+          initials
+        )}
+      </div>
+      <div className="note-card-body">
+        <p className="note-card-meta">{activity.actor} · {date}, {time}</p>
+        <TruncatableNote content={activity.content} />
+      </div>
+      <div className="note-card-actions">
+        <button className="btn-icon-sm" onClick={() => setMenuOpen(!menuOpen)} aria-label="More options">
+          <MoreHorizontal />
+        </button>
+        {menuOpen && (
+          <div className="note-card-menu">
+            <button onClick={(e) => { e.preventDefault(); setMenuOpen(false); }}>Edit</button>
+            <button onClick={(e) => { e.preventDefault(); setMenuOpen(false); }}>Delete</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -104,29 +138,6 @@ const ContactDetail = ({ contact, onBack }) => {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="action-buttons">
-          <button className="btn btn-default">
-            <FileText className="btn-icon-left" />
-            Note
-          </button>
-          <button className="btn btn-default">
-            <Mail className="btn-icon-left" />
-            Email
-          </button>
-          <button className="btn btn-default">
-            <Phone className="btn-icon-left" />
-            Call
-          </button>
-          <button className="btn btn-default">
-            <Calendar className="btn-icon-left" />
-            Meeting
-          </button>
-          <button className="btn-icon">
-            <MoreHorizontal />
-          </button>
-        </div>
-
         {/* Tabs */}
         <div className="tabs">
           {tabs.map(tab => (
@@ -151,7 +162,26 @@ const ContactDetail = ({ contact, onBack }) => {
               {activeTab === 'notes' && 'Notes'}
               {activeTab === 'meetings' && 'Meetings'}
             </h2>
-            {displayedActivities.length > 0 ? (
+            {activeTab === 'notes' ? (
+              <>
+                <button className="btn-add-note">
+                  <Plus />
+                  Add Note
+                </button>
+                {noteActivities.length > 0 ? (
+                  <div className="notes-list">
+                    {noteActivities.map((activity) => (
+                      <NoteCard key={activity.id} activity={activity} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="empty-state">
+                    <FileText className="w-12 h-12" style={{ color: '#8c8b7d' }} />
+                    <p>No notes yet</p>
+                  </div>
+                )}
+              </>
+            ) : displayedActivities.length > 0 ? (
               <div className="activity-timeline">
                 {displayedActivities.map((activity, index) => (
                   <ActivityItem
@@ -170,12 +200,6 @@ const ContactDetail = ({ contact, onBack }) => {
                   <>
                     <FileText className="w-12 h-12" style={{ color: '#8c8b7d' }} />
                     <p>No activity yet</p>
-                  </>
-                )}
-                {activeTab === 'notes' && (
-                  <>
-                    <FileText className="w-12 h-12" style={{ color: '#8c8b7d' }} />
-                    <p>No notes yet</p>
                   </>
                 )}
                 {activeTab === 'meetings' && (
@@ -336,17 +360,12 @@ const renderActionLink = (activity) => {
   return null;
 };
 
-// Project email body - format per screenshot 5: subject in quotes, date, preview (2 lines + Show More)
-const ProjectEmailBody = ({ activity }) => {
-  const { date, time } = activity.timestamp ? formatActivityDateTime(activity.timestamp) : { date: activity.date, time: activity.time };
-  return (
-    <div className="activity-email-body">
-      <p className="email-subject-quoted">&quot;{activity.subject}&quot;</p>
-      <p className="email-datetime">{date} {time}</p>
-      <TruncatableNote content={activity.preview} />
-    </div>
-  );
-};
+// Project email body - truncated preview (2 lines + Show More only; header has subject/date on one line)
+const ProjectEmailBody = ({ activity }) => (
+  <div className="activity-email-body">
+    <TruncatableNote content={activity.preview} />
+  </div>
+);
 
 // Helper function to render activity title (without date - date is shown inline separately)
 const renderActivityTitle = (activity, contactName, contactEmail) => {
@@ -376,10 +395,15 @@ const renderActivityTitle = (activity, contactName, contactEmail) => {
       return <>{actor} assigned deal <strong>{activity.dealName}</strong> ({activity.dealValue}){contactName ? <> to {contactName}</> : null}</>;
     case 'client_portal_message':
       return <>{actor} sent a message in client portal</>;
-    case 'project_email_sent':
-      return <>{actor} sent an email to {activity.recipientEmail || contactEmail}:</>;
-    case 'project_email_received':
-      return <>{actor} received an email:</>;
+    case 'project_email_sent': {
+      const recipient = activity.recipientEmail || contactEmail;
+      const { date, time } = activity.timestamp ? formatActivityDateTime(activity.timestamp) : { date: activity.date, time: activity.time };
+      return <>{actor} sent an email to {recipient}: &quot;{activity.subject}&quot; · {date} {time}</>;
+    }
+    case 'project_email_received': {
+      const { date, time } = activity.timestamp ? formatActivityDateTime(activity.timestamp) : { date: activity.date, time: activity.time };
+      return <>{actor} received an email: &quot;{activity.subject}&quot; · {date} {time}</>;
+    }
     case 'contact_property_updated':
       return <>{actor} updated {activity.field}: &quot;{activity.oldValue}&quot; → &quot;{activity.newValue}&quot;</>;
     case 'contact_created':
