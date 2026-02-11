@@ -665,18 +665,25 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 0;
-  padding-bottom: 24px;
+  /* 5px so vertical line ends ~5px above next icon */
+  padding-bottom: 5px;
+}
+
+/* Events with widget: slightly more breathing room between content and next event */
+.activity-item:not(.activity-item-no-widget):not(.last) {
+  padding-bottom: 12px;
 }
 
 .activity-item.last {
   padding-bottom: 0;
 }
 
-/* Timeline column: icon + vertical line (line extends from beneath icon) */
+/* Timeline column: icon + vertical line (line extends to ~5px above next icon) */
 .activity-timeline-col {
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-self: stretch;
   flex-shrink: 0;
   margin-right: 12px;
 }
@@ -711,8 +718,9 @@ body {
 .activity-timeline-line {
   width: 1px;
   flex: 1;
-  min-height: 16px;
+  min-height: 1px;
   margin-top: 4px;
+  margin-bottom: 0;
   background-color: #d1d1d1;
 }
 

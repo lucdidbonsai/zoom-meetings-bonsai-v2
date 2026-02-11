@@ -28,16 +28,43 @@ const TruncatableNote = ({ content }) => {
   );
 };
 
+const sortDescending = (a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0);
+
 const ContactDetail = ({ contact, onBack }) => {
-  const [activeTab, setActiveTab] = useState('activity');
-  const activities = getActivitiesForContact(contact.id);
+  const [activeTab, setActiveTab] = useState('all');
+  const allActivities = getActivitiesForContact(contact.id);
 
-  const upcomingActivities = activities.filter(a => a.upcoming);
-  const pastActivities = activities
+  // All Activity: past/history only, descending chronological
+  const allActivityItems = allActivities
     .filter(a => !a.upcoming)
-    .sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+    .sort(sortDescending);
 
-  const tabs = ['activity', 'notes', 'meetings'];
+  // Notes: note_added only, descending chronological
+  const noteActivities = allActivities
+    .filter(a => a.type === 'note_added')
+    .sort(sortDescending);
+
+  // Meetings: meeting_scheduled + meeting_ended, descending chronological (includes upcoming)
+  const meetingActivities = allActivities
+    .filter(a => a.type === 'meeting_scheduled' || a.type === 'meeting_ended')
+    .sort(sortDescending);
+
+  const tabs = [
+    { id: 'all', label: 'All Activity' },
+    { id: 'notes', label: 'Notes' },
+    { id: 'meetings', label: 'Meetings' }
+  ];
+
+  const getActivitiesForTab = () => {
+    switch (activeTab) {
+      case 'all': return allActivityItems;
+      case 'notes': return noteActivities;
+      case 'meetings': return meetingActivities;
+      default: return allActivityItems;
+    }
+  };
+
+  const displayedActivities = getActivitiesForTab();
 
   return (
     <div className="contact-detail">
@@ -104,11 +131,11 @@ const ContactDetail = ({ contact, onBack }) => {
         <div className="tabs">
           {tabs.map(tab => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`tab ${activeTab === tab ? 'active' : ''}`}
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`tab ${activeTab === tab.id ? 'active' : ''}`}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {tab.label}
             </button>
           ))}
         </div>
@@ -118,57 +145,48 @@ const ContactDetail = ({ contact, onBack }) => {
       <div className="detail-content-wrapper">
         {/* Activity Feed */}
         <div className="activity-feed">
-          {activeTab === 'activity' && (
-            <>
-              {/* Upcoming Section */}
-              {upcomingActivities.length > 0 && (
-                <div className="activity-section">
-                  <div className="section-header">
-                    <h2 className="section-title">Upcoming</h2>
-                    <button className="btn-text">
-                      <Plus className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <div className="upcoming-cards">
-                    {upcomingActivities.map(activity => (
-                      <UpcomingMeetingCard key={activity.id} activity={activity} />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* History Section */}
-              <div className="activity-section">
-                <h2 className="section-title">History</h2>
-                <div className="activity-timeline">
-                  {pastActivities.map((activity, index) => (
-                    <ActivityItem
-                      key={activity.id}
-                      activity={activity}
-                      isLast={index === pastActivities.length - 1}
-                      contact={contact}
-                      contactName={contact.name}
-                      contactEmail={contact.email}
-                    />
-                  ))}
-                </div>
+          <div className="activity-section">
+            <h2 className="section-title">
+              {activeTab === 'all' && 'All Activity'}
+              {activeTab === 'notes' && 'Notes'}
+              {activeTab === 'meetings' && 'Meetings'}
+            </h2>
+            {displayedActivities.length > 0 ? (
+              <div className="activity-timeline">
+                {displayedActivities.map((activity, index) => (
+                  <ActivityItem
+                    key={activity.id}
+                    activity={activity}
+                    isLast={index === displayedActivities.length - 1}
+                    contact={contact}
+                    contactName={contact.name}
+                    contactEmail={contact.email}
+                  />
+                ))}
               </div>
-            </>
-          )}
-
-          {activeTab === 'notes' && (
-            <div className="empty-state">
-              <FileText className="w-12 h-12" style={{ color: '#8c8b7d' }} />
-              <p>No notes yet</p>
-            </div>
-          )}
-
-          {activeTab === 'meetings' && (
-            <div className="empty-state">
-              <Calendar className="w-12 h-12" style={{ color: '#8c8b7d' }} />
-              <p>No meetings yet</p>
-            </div>
-          )}
+            ) : (
+              <div className="empty-state">
+                {activeTab === 'all' && (
+                  <>
+                    <FileText className="w-12 h-12" style={{ color: '#8c8b7d' }} />
+                    <p>No activity yet</p>
+                  </>
+                )}
+                {activeTab === 'notes' && (
+                  <>
+                    <FileText className="w-12 h-12" style={{ color: '#8c8b7d' }} />
+                    <p>No notes yet</p>
+                  </>
+                )}
+                {activeTab === 'meetings' && (
+                  <>
+                    <Calendar className="w-12 h-12" style={{ color: '#8c8b7d' }} />
+                    <p>No meetings yet</p>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Sidebar */}
@@ -253,6 +271,9 @@ const getActorAvatar = (actorName) => {
   return c?.avatar || null;
 };
 
+// Activity types that have no widget/body (tighter spacing to next event)
+const NO_WIDGET_TYPES = ['meeting_scheduled', 'proposal_accepted', 'contract_signed', 'contract_viewed', 'invoice_paid', 'contact_property_updated', 'contact_created', 'client_portal_invitation_accepted'];
+
 // Activity Timeline Item - Spec: 1) Timeline icon (always) + vertical line, 2) Avatar (user events only), 3) Action link (conditional, right), 4) Widget (conditional), 5) Text preview (conditional)
 const ActivityItem = ({ activity, isLast, contact, contactName, contactEmail }) => {
   const config = eventTypeConfig[activity.type];
@@ -260,9 +281,10 @@ const ActivityItem = ({ activity, isLast, contact, contactName, contactEmail }) 
   const isSystemEvent = activity.actor === 'System' || (activity.type === 'contact_created' && activity.createdBy !== 'manual');
   const { date, time } = activity.timestamp ? formatActivityDateTime(activity.timestamp) : { date: activity.date, time: activity.time };
   const actorAvatar = getActorAvatar(activity.actor);
+  const hasNoWidget = NO_WIDGET_TYPES.includes(activity.type);
 
   return (
-    <div className={`activity-item ${isLast ? 'last' : ''}`}>
+    <div className={`activity-item ${isLast ? 'last' : ''} ${hasNoWidget ? 'activity-item-no-widget' : ''}`}>
       {/* 1. Timeline icon + vertical line (always) - greyscale */}
       <div className="activity-timeline-col">
         <div className="activity-icon-wrapper activity-icon-greyscale">
