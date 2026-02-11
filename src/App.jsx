@@ -76,7 +76,13 @@ function App() {
             >
               <div className="contact-card-content">
                 <div className="contact-avatar-section">
-                  <div className="contact-avatar">{contact.initials}</div>
+                  <div className="contact-avatar">
+                    {contact.avatar ? (
+                      <img src={contact.avatar} alt={contact.name} className="contact-avatar-img" />
+                    ) : (
+                      contact.initials
+                    )}
+                  </div>
                   <div className="contact-info">
                     <h3 className="contact-name">{contact.name}</h3>
                     <p className="contact-role">{contact.role}</p>

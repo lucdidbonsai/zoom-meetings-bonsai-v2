@@ -139,6 +139,15 @@ const allActivities = {
       content: 'Just uploaded the brand guidelines to the shared folder. Let me know if you need anything else!'
     },
     {
+      id: 'act-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 17, 2025',
+      time: '2:30 PM',
+      timestamp: '2025-12-17T14:30:00',
+      actor: 'Michael Fawler',
+      actorInitials: 'MF'
+    },
+    {
       id: 'act-12',
       type: 'invoice_sent',
       date: 'Dec 15, 2025',
@@ -176,13 +185,14 @@ const allActivities = {
     {
       id: 'act-14',
       type: 'project_email_sent',
-      date: 'Dec 10, 2025',
-      time: '10:20 AM',
-      timestamp: '2025-12-10T10:20:00',
-      actor: 'Laura Albany',
-      actorInitials: 'LA',
-      subject: 'Q1 Campaign Timeline & Milestones',
-      preview: 'Hi Michael, attached is the detailed timeline for the Q1 campaign rollout. Please review and let me know...'
+      date: 'Today',
+      time: '8:15:19 AM',
+      timestamp: new Date().toISOString().split('T')[0] + 'T08:15:19',
+      actor: 'Lucas Did',
+      actorInitials: 'LD',
+      subject: 'This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. ',
+      preview: 'This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very lengthy email. This is a very',
+      recipientEmail: 'lucas.didier+testclienportal@gmail.com'
     },
     {
       id: 'act-15',
@@ -341,6 +351,15 @@ const allActivities = {
       actor: 'Sarah Chen',
       actorInitials: 'SC',
       content: 'Can you share the competitive analysis deck from last week? Our product leads want to review it before Monday\'s standup.'
+    },
+    {
+      id: 'act-2-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 14, 2025',
+      time: '11:00 AM',
+      timestamp: '2025-12-14T11:00:00',
+      actor: 'Sarah Chen',
+      actorInitials: 'SC'
     },
     {
       id: 'act-2-12',
@@ -543,6 +562,15 @@ const allActivities = {
       actor: 'David Rodriguez',
       actorInitials: 'DR',
       content: 'Uploaded the brand asset library and style references to the shared folder. The team can start pulling from these for the moodboards.'
+    },
+    {
+      id: 'act-3-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 15, 2025',
+      time: '3:00 PM',
+      timestamp: '2025-12-15T15:00:00',
+      actor: 'David Rodriguez',
+      actorInitials: 'DR'
     },
     {
       id: 'act-3-12',
@@ -748,6 +776,15 @@ const allActivities = {
       content: 'Shared the Google Analytics access and our internal dashboard credentials in the secure notes section. Let me know once your team has access.'
     },
     {
+      id: 'act-4-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 13, 2025',
+      time: '9:30 AM',
+      timestamp: '2025-12-13T09:30:00',
+      actor: 'Emily Watson',
+      actorInitials: 'EW'
+    },
+    {
       id: 'act-4-12',
       type: 'invoice_sent',
       date: 'Dec 11, 2025',
@@ -949,6 +986,15 @@ const allActivities = {
       actor: 'James Mitchell',
       actorInitials: 'JM',
       content: 'Uploaded our current architecture diagrams and API documentation to the project folder. The Confluence export is in there too.'
+    },
+    {
+      id: 'act-5-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 17, 2025',
+      time: '10:00 AM',
+      timestamp: '2025-12-17T10:00:00',
+      actor: 'James Mitchell',
+      actorInitials: 'JM'
     },
     {
       id: 'act-5-12',
@@ -1154,6 +1200,15 @@ const allActivities = {
       content: 'Granted your team editor access to our Figma workspace. You should be able to see all the component libraries under "Design Systems" project.'
     },
     {
+      id: 'act-6-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 12, 2025',
+      time: '2:00 PM',
+      timestamp: '2025-12-12T14:00:00',
+      actor: 'Amanda Foster',
+      actorInitials: 'AF'
+    },
+    {
       id: 'act-6-12',
       type: 'invoice_sent',
       date: 'Dec 10, 2025',
@@ -1356,6 +1411,15 @@ const allActivities = {
       content: 'Uploaded our current sales playbook and training materials. Also added last quarter\'s pipeline report — the win rate data should be helpful for your analysis.'
     },
     {
+      id: 'act-7-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 16, 2025',
+      time: '11:30 AM',
+      timestamp: '2025-12-16T11:30:00',
+      actor: 'Robert Kim',
+      actorInitials: 'RK'
+    },
+    {
       id: 'act-7-12',
       type: 'invoice_sent',
       date: 'Dec 14, 2025',
@@ -1556,6 +1620,15 @@ const allActivities = {
       actor: 'Jessica Martinez',
       actorInitials: 'JM',
       content: 'Shared our current SOPs and process documentation. The folder also has our org chart and team RACI matrix — should be helpful for the audit.'
+    },
+    {
+      id: 'act-8-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 15, 2025',
+      time: '4:00 PM',
+      timestamp: '2025-12-15T16:00:00',
+      actor: 'Jessica Martinez',
+      actorInitials: 'JM'
     },
     {
       id: 'act-8-12',
@@ -1761,6 +1834,15 @@ const allActivities = {
       content: 'Shared our board deck from last quarter and the strategic priorities document. Please treat these as strictly confidential — NDA applies.'
     },
     {
+      id: 'act-9-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 18, 2025',
+      time: '1:00 PM',
+      timestamp: '2025-12-18T13:00:00',
+      actor: 'Christopher Lee',
+      actorInitials: 'CL'
+    },
+    {
       id: 'act-9-12',
       type: 'invoice_sent',
       date: 'Dec 16, 2025',
@@ -1964,6 +2046,15 @@ const allActivities = {
       content: 'Added the Slack Connect documentation and our partner API sandbox credentials to the project folder. The sandbox resets daily at midnight PST.'
     },
     {
+      id: 'act-10-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 14, 2025',
+      time: '3:15 PM',
+      timestamp: '2025-12-14T15:15:00',
+      actor: 'Laura Albany',
+      actorInitials: 'LA'
+    },
+    {
       id: 'act-10-12',
       type: 'invoice_sent',
       date: 'Dec 11, 2025',
@@ -2164,6 +2255,15 @@ const allActivities = {
       actor: 'Daniel Thompson',
       actorInitials: 'DT',
       content: 'Uploaded last 3 quarters of financial reports and the current budget template. Also added our chart of accounts — you\'ll need that for the model mapping.'
+    },
+    {
+      id: 'act-11-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 17, 2025',
+      time: '9:00 AM',
+      timestamp: '2025-12-17T09:00:00',
+      actor: 'Daniel Thompson',
+      actorInitials: 'DT'
     },
     {
       id: 'act-11-12',
@@ -2369,6 +2469,15 @@ const allActivities = {
       content: 'Added our existing content library, editorial calendar, and brand guidelines to the shared folder. The newsletter archive goes back 2 years — helpful for the audit.'
     },
     {
+      id: 'act-12-11b',
+      type: 'client_portal_invitation_accepted',
+      date: 'Dec 13, 2025',
+      time: '10:30 AM',
+      timestamp: '2025-12-13T10:30:00',
+      actor: 'Olivia Parker',
+      actorInitials: 'OP'
+    },
+    {
       id: 'act-12-12',
       type: 'invoice_sent',
       date: 'Dec 10, 2025',
@@ -2456,82 +2565,87 @@ export const formatActivityDateTime = (timestamp) => {
 export const eventTypeConfig = {
   meeting_scheduled: {
     icon: 'calendar',
-    color: '#22ad01',
+    color: '#6b6b6b',
     label: 'Meeting Scheduled'
   },
   meeting_ended: {
     icon: 'video',
-    color: '#5db6f8',
+    color: '#6b6b6b',
     label: 'Meeting Ended'
   },
   note_added: {
     icon: 'edit',
-    color: '#8c8b7d',
+    color: '#6b6b6b',
     label: 'Note Added'
   },
   proposal_sent: {
     icon: 'file-text',
-    color: '#520eb0',
+    color: '#6b6b6b',
     label: 'Proposal Sent'
   },
   proposal_accepted: {
     icon: 'check-circle',
-    color: '#22ad01',
+    color: '#6b6b6b',
     label: 'Proposal Accepted'
   },
   contract_sent: {
     icon: 'file-text',
-    color: '#520eb0',
+    color: '#6b6b6b',
     label: 'Contract Sent'
   },
   contract_signed: {
     icon: 'check-circle',
-    color: '#22ad01',
+    color: '#6b6b6b',
     label: 'Contract Signed'
   },
   contract_viewed: {
     icon: 'file-text',
-    color: '#520eb0',
+    color: '#6b6b6b',
     label: 'Contract Viewed'
   },
   invoice_sent: {
     icon: 'dollar-sign',
-    color: '#ee8146',
+    color: '#6b6b6b',
     label: 'Invoice Sent'
   },
   invoice_paid: {
     icon: 'check-circle',
-    color: '#22ad01',
+    color: '#6b6b6b',
     label: 'Invoice Paid'
   },
   deal_assigned: {
     icon: 'briefcase',
-    color: '#5db6f8',
+    color: '#6b6b6b',
     label: 'Deal Assigned'
   },
   client_portal_message: {
-    icon: 'message-square',
-    color: '#5db6f8',
+    icon: 'client-portal',
+    color: '#6b6b6b',
     label: 'Client Portal Message'
   },
   project_email_sent: {
     icon: 'mail',
-    color: '#8c8b7d',
+    color: '#6b6b6b',
     label: 'Email Sent'
   },
   project_email_received: {
     icon: 'mail',
-    color: '#8c8b7d',
+    color: '#6b6b6b',
     label: 'Email Received'
   },
   contact_property_updated: {
-    icon: 'edit',
-    color: '#8c8b7d',
+    icon: 'contact',
+    color: '#6b6b6b',
     label: 'Contact Updated'
   },
   contact_created: {
-    icon: 'user-plus',
-    color: '#22ad01',
+    icon: 'contact',
+    color: '#6b6b6b',
     label: 'Contact Created'
+  },
+  client_portal_invitation_accepted: {
+    icon: 'client-portal',
+    color: '#6b6b6b',
+    label: 'Client Portal Invitation Accepted'
   }
 };
