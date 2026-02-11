@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { getActivitiesForContact, eventTypeConfig, formatActivityDateTime } from '../data/activities';
 import { contacts } from '../data/contacts';
-import { getIconComponent, Plus, MoreHorizontal, Calendar, FileText, Video, DealsIcon, Play, Sparkle } from './Icons';
+import { getIconComponent, Plus, MoreHorizontal, Calendar, FileText, Video, DealsIcon, Play, Sparkle, InvoiceIcon, ContractIcon, ProposalIcon, Clock, Users, X } from './Icons';
 
 // Truncatable Note Component
 const TruncatableNote = ({ content }) => {
@@ -52,9 +52,64 @@ const NoteComposer = ({ onCancel }) => (
 
 const sortDescending = (a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0);
 
+// Meeting Drawer - slide-in panel with meeting details
+const MeetingDrawer = ({ meeting, onClose }) => {
+  const [activeTab, setActiveTab] = useState('Summary');
+  if (!meeting) return null;
+  const { date, time } = meeting.timestamp ? formatActivityDateTime(meeting.timestamp) : { date: meeting.date, time: meeting.time };
+  return (
+    <div className="meeting-drawer-overlay">
+      <div className="meeting-drawer-backdrop" onClick={onClose} aria-hidden="true" />
+      <div className="meeting-drawer">
+        <div className="meeting-drawer-header">
+          <div>
+            <h1 className="meeting-drawer-title">{meeting.title}</h1>
+            <div className="meeting-drawer-meta">
+              <span><Calendar className="meeting-drawer-meta-icon" />{date} at {time}</span>
+              <span><Users className="meeting-drawer-meta-icon" />{meeting.attendees} participants</span>
+              <span><Clock className="meeting-drawer-meta-icon" />{meeting.duration}</span>
+            </div>
+          </div>
+          <button onClick={onClose} className="meeting-drawer-close" aria-label="Close"><X className="w-5 h-5" /></button>
+        </div>
+        {meeting.hasRecording && (
+          <div className="meeting-drawer-recording">
+            <div className="meeting-drawer-recording-preview">
+              <div className="meeting-drawer-recording-overlay" />
+              <div className="meeting-drawer-recording-play">
+                <Play className="w-6 h-6" />
+              </div>
+              <div className="meeting-drawer-recording-footer">
+                <span>Recording available</span>
+                <span>{meeting.duration}</span>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="meeting-drawer-tabs">
+          {['Summary', 'Transcript', 'Comments'].map(tab => (
+            <button key={tab} onClick={() => setActiveTab(tab)} className={`meeting-drawer-tab ${activeTab === tab ? 'active' : ''}`}>{tab}</button>
+          ))}
+        </div>
+        <div className="meeting-drawer-content">
+          {activeTab === 'Summary' && (
+            <div>
+              <h3 className="meeting-drawer-section-title">Summary</h3>
+              <p className="meeting-drawer-summary">{meeting.summary || 'The team discussed project timelines, budget allocation, and next steps. Key decisions were made regarding the Q1 roadmap and resource allocation for the upcoming sprint.'}</p>
+            </div>
+          )}
+          {activeTab === 'Transcript' && <p className="meeting-drawer-empty">No transcript available for this meeting.</p>}
+          {activeTab === 'Comments' && <p className="meeting-drawer-empty">No comments yet. Be the first to add one!</p>}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ContactDetail = ({ contact, onBack }) => {
   const [activeTab, setActiveTab] = useState('all');
   const [isComposerOpen, setIsComposerOpen] = useState(false);
+  const [selectedMeeting, setSelectedMeeting] = useState(null);
   const allActivities = getActivitiesForContact(contact.id);
 
   // All Activity: past/history only, descending chronological
@@ -91,6 +146,7 @@ const ContactDetail = ({ contact, onBack }) => {
 
   return (
     <div className="contact-detail">
+      {selectedMeeting && <MeetingDrawer meeting={selectedMeeting} onClose={() => setSelectedMeeting(null)} />}
       {/* Header */}
       <div className="detail-header">
         <div className="breadcrumb">
@@ -171,6 +227,7 @@ const ContactDetail = ({ contact, onBack }) => {
                         contact={contact}
                         contactName={contact.name}
                         contactEmail={contact.email}
+                        onMeetingClick={setSelectedMeeting}
                       />
                     ))}
                   </div>
@@ -191,6 +248,7 @@ const ContactDetail = ({ contact, onBack }) => {
                     contact={contact}
                     contactName={contact.name}
                     contactEmail={contact.email}
+                    onMeetingClick={setSelectedMeeting}
                   />
                 ))}
               </div>
@@ -299,7 +357,7 @@ const getActorAvatar = (actorName) => {
 const NO_WIDGET_TYPES = ['meeting_scheduled', 'proposal_accepted', 'contract_signed', 'contract_viewed', 'invoice_paid', 'contact_property_updated', 'contact_created', 'client_portal_invitation_accepted'];
 
 // Activity Timeline Item - Spec: 1) Timeline icon (always) + vertical line, 2) Avatar (user events only), 3) Action link (conditional, right), 4) Widget (conditional), 5) Text preview (conditional)
-const ActivityItem = ({ activity, isLast, contact, contactName, contactEmail }) => {
+const ActivityItem = ({ activity, isLast, contact, contactName, contactEmail, onMeetingClick }) => {
   const config = eventTypeConfig[activity.type];
   const IconComponent = getIconComponent(config.icon);
   const isSystemEvent = activity.actor === 'System' || (activity.type === 'contact_created' && activity.createdBy !== 'manual');
@@ -337,7 +395,7 @@ const ActivityItem = ({ activity, isLast, contact, contactName, contactEmail }) 
           </div>
           {renderActionLink(activity)}
         </div>
-        {renderActivityBody(activity)}
+        {renderActivityBody(activity, { onMeetingClick })}
       </div>
     </div>
   );
@@ -416,14 +474,20 @@ const renderActivityTitle = (activity, contactName, contactEmail) => {
 };
 
 // Helper function to render activity body
-const renderActivityBody = (activity) => {
+const renderActivityBody = (activity, { onMeetingClick } = {}) => {
   switch (activity.type) {
     case 'meeting_scheduled':
       return null;
 
     case 'meeting_ended':
       return (
-        <div className="activity-widget activity-widget-meeting">
+        <div
+          className="activity-widget activity-widget-meeting activity-widget-meeting-clickable"
+          role="button"
+          tabIndex={0}
+          onClick={() => onMeetingClick?.(activity)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onMeetingClick?.(activity); } }}
+        >
           <div className="activity-widget-meeting-icon">
             <Video className="w-4 h-4" />
           </div>
@@ -461,10 +525,17 @@ const renderActivityBody = (activity) => {
       return <TruncatableNote content={activity.content} />;
 
     case 'proposal_sent':
+      return (
+        <div className="activity-widget activity-widget-document">
+          <ProposalIcon className="activity-widget-icon activity-widget-icon-proposal" />
+          <span>{activity.documentTitle}</span>
+        </div>
+      );
+
     case 'contract_sent':
       return (
         <div className="activity-widget activity-widget-document">
-          <FileText className="activity-widget-icon activity-widget-icon-contract" />
+          <ContractIcon className="activity-widget-icon activity-widget-icon-contract" />
           <span>{activity.documentTitle}</span>
         </div>
       );
@@ -472,7 +543,7 @@ const renderActivityBody = (activity) => {
     case 'invoice_sent':
       return (
         <div className="activity-widget activity-widget-document">
-          <FileText className="activity-widget-icon activity-widget-icon-invoice" />
+          <InvoiceIcon className="activity-widget-icon activity-widget-icon-invoice" />
           <span>Invoice {activity.invoiceNumber}</span>
         </div>
       );

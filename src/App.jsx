@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { contacts } from './data/contacts';
 import ContactDetail from './components/ContactDetail';
-import { Search, ChevronRight } from './components/Icons';
+import { Search, ChevronRight, InvoiceIcon, ContractIcon, ProposalIcon } from './components/Icons';
 import './App.css';
 
 function App() {
@@ -33,8 +33,9 @@ function App() {
             <a href="#" className="nav-item">Dashboard</a>
             <a href="#" className="nav-item">Projects</a>
             <a href="#" className="nav-item active">Contacts</a>
-            <a href="#" className="nav-item">Invoices</a>
-            <a href="#" className="nav-item">Contracts</a>
+            <a href="#" className="nav-item"><ProposalIcon className="nav-item-icon" /> Proposals</a>
+            <a href="#" className="nav-item"><ContractIcon className="nav-item-icon" /> Contracts</a>
+            <a href="#" className="nav-item"><InvoiceIcon className="nav-item-icon" /> Invoices</a>
           </div>
         </div>
       </div>
