@@ -3234,7 +3234,7 @@ export const eventTypeConfig = {
     label: 'Proposal Sent'
   },
   proposal_accepted: {
-    icon: 'check-circle',
+    icon: 'proposal',
     color: '#6b6b6b',
     label: 'Proposal Accepted'
   },
@@ -3244,7 +3244,7 @@ export const eventTypeConfig = {
     label: 'Contract Sent'
   },
   contract_signed: {
-    icon: 'check-circle',
+    icon: 'contract',
     color: '#6b6b6b',
     label: 'Contract Signed'
   },
@@ -3259,7 +3259,7 @@ export const eventTypeConfig = {
     label: 'Invoice Sent'
   },
   invoice_paid: {
-    icon: 'check-circle',
+    icon: 'invoice',
     color: '#6b6b6b',
     label: 'Invoice Paid'
   },
