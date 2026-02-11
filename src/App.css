@@ -455,7 +455,7 @@ body {
 /* Contact Info Section */
 .contact-info-section {
   background-color: var(--bg-content);
-  padding: 24px 32px;
+  padding: 24px 32px 0;
   border-bottom: 1px solid var(--border-content);
 }
 
@@ -552,7 +552,7 @@ body {
 /* Activity Feed */
 .activity-feed {
   flex: 1;
-  padding: 12px 32px 24px;
+  padding: 30px 32px 24px;
   overflow-y: auto;
   background-color: var(--bg-content);
 }
