@@ -3264,7 +3264,7 @@ export const eventTypeConfig = {
     label: 'Invoice Paid'
   },
   deal_assigned: {
-    icon: 'briefcase',
+    icon: 'deals',
     color: '#6b6b6b',
     label: 'Deal Assigned'
   },
